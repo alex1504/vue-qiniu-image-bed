@@ -11,9 +11,6 @@
         <mu-menu-item value="6" title="Me" />
         <mu-menu-item value="7" title="Log out" @click="logOut" /> -->
       </mu-icon-menu>
-      <span class="avatar">
-          <img :src="avatar">
-        </span>
     </div>
   </div>
   <!--END leftcol-->
@@ -39,12 +36,6 @@
     computed: {
       activeMenu: function() {
         return this.$store.getters.activeMenu || 1;
-      },
-      avatar() {
-        return (
-          (storage.get("loginInfo") && storage.get("loginInfo").avatar) ||
-          "../images/avatar_placehold.png"
-        );
       }
     },
     methods: {

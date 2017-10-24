@@ -1,29 +1,34 @@
 var app = require('express')()
 var server = require('http').createServer(app)
 var cors = require('cors')
-// var io = require('socket.io').listen(server);
-
+    // var io = require('socket.io').listen(server);
 
 var port = process.env.PORT || 3000
 var bodyParser = require('body-parser')
 
-
 // 应用层中间件
-app.use(cors())
+app.use(cors());
+app.all('*', function(req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET");
+    res.setHeader("Access-Control-Max-Age", "3600");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, accessKey, secretKey, bucket");
+    next();
+});
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
 app.use(bodyParser.json());
 
 // 应用层路由
 app.route('/')
-  .get(function(req,res){
-    res.json({
-      code: 200,
-      msg: "Hellow, this is jerry's qiniu server",
-      node_version: "7.1.0"
-    })
-  });
+    .get(function(req, res) {
+        res.json({
+            code: 200,
+            msg: "Hellow, this is jerry's qiniu server",
+            node_version: "7.1.0"
+        })
+    });
 
 var qiniuRoute = require('./api/routes/qiniuRoute')
 qiniuRoute(app)
