@@ -1,0 +1,543 @@
+/*
+Icon classes can be used entirely standalone. They are named after their original file names.
+
+Example usage in HTML:
+
+`display: block` sprite:
+<div class="icon-home"></div>
+
+To change `display`e.g. `display: inline-block;`), we suggest using a common CSS class:
+
+// CSS
+.icon {
+  display: inline-block;
+}
+
+// HTML
+<i class="icon icon-home"></i>
+*/
+
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.icon-1 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-10 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-11 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-12 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-13 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-14 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-15 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-16 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-17 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-18 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-19 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-2 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-20 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-21 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-22 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-23 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-24 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-25 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-26 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-27 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-28 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-29 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-3 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-30 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-31 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-32 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-33 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-34 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-35 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-36 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-37 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-38 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-39 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-4 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-40 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-41 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-42 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-43 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-44 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-45 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-46 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-47 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-48 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-49 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-5 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-50 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-51 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-52 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-53 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-54 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-55 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-56 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-57 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-58 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-59 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-6 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-60 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-61 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-62 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -64px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-63 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -96px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-64 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -128px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-65 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -160px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-66 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -192px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-67 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -224px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-68 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px 0px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-69 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-7 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -64px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-70 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -96px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-71 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -128px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-72 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -160px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-73 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -192px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-74 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -256px -224px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-8 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: 0px -256px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-9 {
+    background-image: url(../images/emoji_sprite.png);
+    background-position: -32px -256px;
+    width: 32px;
+    height: 32px;
+}
