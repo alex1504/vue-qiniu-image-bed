@@ -1,0 +1,3 @@
+[remote "heroku"]
+	url = https://git.heroku.com/qiniu-server.git
+	fetch = +refs/heads/*:refs/remotes/heroku/*
