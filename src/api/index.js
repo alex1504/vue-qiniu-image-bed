@@ -1,12 +1,5 @@
 import axios from 'axios'
 import storage from '../utils/storage'
-/* import Util from '../utils/common'
-
-Util.setHeadersCommon({
-    accessKey: storage.get("qiniu-settings") && storage.get("qiniu-settings").accessKey,
-    secretKey: storage.get("qiniu-settings") && storage.get("qiniu-settings").secretKey,
-    bucket: storage.get("qiniu-settings") && storage.get("qiniu-settings").bucket
-}) */
 
 if (process.env.NODE_ENV == 'development') {
   // axios.defaults.baseURL = '/api';
