@@ -87,6 +87,7 @@ export default {
         });
         return;
       }
+      this.isUpload = true;
       API.uploadFile(auth, files)
         .then(res => {
           console.log(res.data);
@@ -108,9 +109,10 @@ export default {
           } else {
             this.$store.commit("SNACK_BAR_CHANGE", {
               snackbar: true,
-              snackMsg: "上传失败，请检查七牛配置是否正确"
+              snackMsg: "上传失败，请重试"
             });
           }
+          this.isUpload = false;
         })
         .catch(err => {
           this.isUpload = false;
@@ -118,6 +120,7 @@ export default {
             snackbar: true,
             snackMsg: "上传失败"
           });
+          this.isUpload = false;
         });
     },
     onInputMouseenter(e) {
@@ -160,7 +163,7 @@ export default {
           } else {
             this.$store.commit("SNACK_BAR_CHANGE", {
               snackbar: true,
-              snackMsg: "上传失败，请检查七牛配置是否正确"
+              snackMsg: "上传失败，请重试"
             });
           }
           this.isUpload = false;
