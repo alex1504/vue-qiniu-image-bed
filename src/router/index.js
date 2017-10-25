@@ -12,7 +12,7 @@ import PostDetail from '@/components/PostDetail'
 import ImageList from '@/components/ImageList'
 import Me from '@/components/Me'
 import Settings from '@/components/Settings'
-
+import Util from '../utils/common'
 
 Vue.use(Router)
 
@@ -27,7 +27,7 @@ export default new Router({
         children: [{
             name: 'Config',
             path: 'config',
-            component: Config
+            component: Config,
         }, {
             name: 'RegistForm',
             path: 'regist',

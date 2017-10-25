@@ -1,10 +1,10 @@
 <template>
   <div class="m-settings-public">
     <slot name="header"></slot>
-    <mu-text-field label="AccessKey" type="password" disabled labelFloat v-model="accessKey" /><br/>
-    <mu-text-field label="SecretKey" type="password" disabled labelFloat v-model="secretKey" /><br/>
-    <mu-text-field label="Bucket" type="password" disabled labelFloat v-model="bucket" /><br/>
-    <mu-text-field label="Domain" disabled hintText="http://ory715icu.bkt.clouddn.com" labelFloat v-model="domain" /><br/>
+    <mu-text-field label="AccessKey" type="password" disabled labelFloat v-model="qiniuAuth.accessKey" /><br/>
+    <mu-text-field label="SecretKey" type="password" disabled labelFloat v-model="qiniuAuth.secretKey" /><br/>
+    <mu-text-field label="Bucket" type="password" disabled labelFloat v-model="qiniuAuth.bucket" /><br/>
+    <mu-text-field label="Domain" disabled hintText="http://ory715icu.bkt.clouddn.com" labelFloat v-model="qiniuAuth.domain" /><br/>
     <slot name="btn"></slot>
     <slot name="footer">
     </slot>
@@ -17,28 +17,14 @@
   export default {
     name: "settings",
     data() {
-      return {
-        accessKey:
-          (storage.get("qiniu-settings-public") &&
-            storage.get("qiniu-settings-public").accessKey) ||
-          "WqHb4bf7PzMbq5dmqBf6oA9PNkqdNYqF0dbs6JpK",
-        secretKey:
-          (storage.get("qiniu-settings-public") &&
-            storage.get("qiniu-settings-public").secretKey) ||
-          "DUqjuJW3jziYEoC5JaiqF8o3jAKvsxOJoAtV2AOv",
-        bucket:
-          (storage.get("qiniu-settings-public") &&
-            storage.get("qiniu-settings-public").bucket) ||
-          "public",
-        domain:
-          (storage.get("qiniu-settings-public") &&
-            storage.get("qiniu-settings-public").domain) ||
-          "http://oydgatjao.bkt.clouddn.com"
-      };
+      return{
+        qiniuAuth: Util.getPublicSettings()
+      }
     },
-    computed: {},
-    methods: {
-    }
+    computed: {
+      
+    },
+    methods: {}
   };
 </script>
 

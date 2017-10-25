@@ -6,7 +6,7 @@
       <div class="dragbox" :class="{'z-active': isDragOver}">
         <div>
           <mu-icon value="backup" />
-          <p>拖拽图片到这里上传</p>
+          <p>{{tip}}</p>
         </div>
       </div>
     </div>
@@ -36,268 +36,274 @@
 </template>
 
 <script>
-import storage from "../utils/storage";
-import axios from "axios";
-import API from "../api/index";
-import ImagePop from "./ImagePop";
-import Util from "../utils/common";
-export default {
-  data() {
-    return {
-      isDragOver: false,
-      picList: [
-        /* {
-                      key: 'a.jpg',
-                      src: "http://qiniu1.huzerui.com//2017-10-23/20709373.png"
-                    } */
-      ],
-      isUpload: false,
-      qiniuAuth: Util.getQiniuAuth()
-    };
-  },
-  components: {},
-  computed: {},
-  methods: {
-    onDragenter() {
-      console.log("dragenter");
-      this.isDragOver = true;
+  import storage from "../utils/storage";
+  import axios from "axios";
+  import API from "../api/index";
+  import ImagePop from "./ImagePop";
+  import Util from "../utils/common";
+  export default {
+    data() {
+      return {
+        isDragOver: false,
+        picList: [
+          /* {
+                        key: 'a.jpg',
+                        src: "http://qiniu1.huzerui.com//2017-10-23/20709373.png"
+                      } */
+        ],
+        isUpload: false
+      };
     },
-    onDragover() {
-      console.log("dragover");
-      this.isDragOver = true;
-    },
-    onDragleave() {
-      console.log("dragLeave");
-      this.isDragOver = false;
-    },
-    onDrop(e) {
-      this.isDragOver = false;
-      const files = e.dataTransfer.files;
-      if (!files.length) return;
-      const isAllImage = Array.prototype.every.call(files, file => {
-        return file.type.indexOf("image") != -1;
-      });
-      if (!isAllImage) {
-        this.$store.commit("SNACK_BAR_CHANGE", {
-          snackbar: true,
-          snackMsg: "只支持图片文件上传"
-        });
-        return;
+    computed: {
+      qiniuAuth() {
+        return this.$store.state.qiniuAuth
+      },
+      tip(){
+        return this.isDragOver ? '松开鼠标开始上传' : '拖拽图片到这里上传'
       }
-      this.isUpload = true;
-      API.uploadFile(this.qiniuAuth, files)
-        .then(res => {
-          console.log(res.data);
-          if (res.data instanceof Array && res.data.length) {
-            res.data.forEach(obj => {
-              this.picList.push({
-                hash: obj.hash,
-                key: obj.key,
-                src: `${this.qiniuAuth.domain}/${obj.key}`
-              });
-            });
-            this.$store.commit("SNACK_BAR_CHANGE", {
-              snackbar: true,
-              snackMsg: "上传成功"
-            });
-            this.$store.commit("PICLIST_CHANGE", {
-              isPicListChange: true
-            });
-          } else {
-            this.$store.commit("SNACK_BAR_CHANGE", {
-              snackbar: true,
-              snackMsg: "上传失败，请重试"
-            });
-          }
-          this.isUpload = false;
-        })
-        .catch(err => {
-          this.isUpload = false;
+    },
+    methods: {
+      onDragenter() {
+        console.log("dragenter");
+        this.isDragOver = true;
+      },
+      onDragover() {
+        console.log("dragover");
+        this.isDragOver = true;
+      },
+      onDragleave() {
+        console.log("dragLeave");
+        this.isDragOver = false;
+      },
+      onDrop(e) {
+        this.isDragOver = false;
+        const files = e.dataTransfer.files;
+        if (!files.length) return;
+        const isAllImage = Array.prototype.every.call(files, file => {
+          return file.type.indexOf("image") != -1;
+        });
+        if (!isAllImage) {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
-            snackMsg: "上传失败"
+            snackMsg: "只支持图片文件上传"
           });
-          this.isUpload = false;
-        });
-    },
-    onInputMouseenter(e) {
-      const input = e.target.getElementsByClassName("mu-text-field-input")[0];
-      input.focus();
-      input.select();
-    },
-    uploadFile(e) {
-      const files = e.target.files;
-      if (!files.length) return;
-      const isAllImage = Array.prototype.every.call(files, file => {
-        return file.type.indexOf("image") != -1;
-      });
-      if (!isAllImage) {
-        this.$store.commit("SNACK_BAR_CHANGE", {
-          snackbar: true,
-          snackMsg: "只支持图片文件上传"
-        });
-        return;
-      }
-      this.isUpload = true;
-      API.uploadFile(this.qiniuAuth, e.target.files)
-        .then(res => {
-          console.log(res.data);
-          if (res.data instanceof Array && res.data.length) {
-            res.data.forEach(obj => {
-              this.picList.push({
-                hash: obj.hash,
-                key: res.data.key,
-                src: `${this.qiniuAuth.domain}/${obj.key}`
+          return;
+        }
+        this.isUpload = true;
+        API.uploadFile(this.qiniuAuth, files)
+          .then(res => {
+            console.log(res.data);
+            if (res.data instanceof Array && res.data.length) {
+              res.data.forEach(obj => {
+                this.picList.push({
+                  hash: obj.hash,
+                  key: obj.key,
+                  src: `${this.qiniuAuth.domain}/${obj.key}`
+                });
               });
-            });
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传成功"
+              });
+              this.$store.commit("PICLIST_CHANGE", {
+                isPicListChange: true
+              });
+            } else {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传失败，请重试"
+              });
+            }
+            this.isUpload = false;
+          })
+          .catch(err => {
+            this.isUpload = false;
             this.$store.commit("SNACK_BAR_CHANGE", {
               snackbar: true,
-              snackMsg: "上传成功"
+              snackMsg: "上传失败"
             });
-            this.$store.commit("PICLIST_CHANGE", {
-              isPicListChange: true
-            });
-          } else {
-            this.$store.commit("SNACK_BAR_CHANGE", {
-              snackbar: true,
-              snackMsg: "上传失败，请重试"
-            });
-          }
-          this.isUpload = false;
-        })
-        .catch(err => {
-          console.log(err);
-          this.isUpload = false;
+            this.isUpload = false;
+          });
+      },
+      onInputMouseenter(e) {
+        const input = e.target.getElementsByClassName("mu-text-field-input")[0];
+        input.focus();
+        input.select();
+      },
+      uploadFile(e) {
+        const files = e.target.files;
+        if (!files.length) return;
+        const isAllImage = Array.prototype.every.call(files, file => {
+          return file.type.indexOf("image") != -1;
+        });
+        if (!isAllImage) {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
-            snackMsg: "上传失败"
+            snackMsg: "只支持图片文件上传"
           });
+          return;
+        }
+        this.isUpload = true;
+        API.uploadFile(this.qiniuAuth, e.target.files)
+          .then(res => {
+            console.log(res.data);
+            if (res.data instanceof Array && res.data.length) {
+              res.data.forEach(obj => {
+                this.picList.push({
+                  hash: obj.hash,
+                  key: res.data.key,
+                  src: `${this.qiniuAuth.domain}/${obj.key}`
+                });
+              });
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传成功"
+              });
+              this.$store.commit("PICLIST_CHANGE", {
+                isPicListChange: true
+              });
+            } else {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传失败，请重试"
+              });
+            }
+            this.isUpload = false;
+          })
+          .catch(err => {
+            console.log(err);
+            this.isUpload = false;
+            this.$store.commit("SNACK_BAR_CHANGE", {
+              snackbar: true,
+              snackMsg: "上传失败"
+            });
+          });
+      },
+      onCopy() {
+        this.$store.commit("SNACK_BAR_CHANGE", {
+          snackbar: true,
+          snackMsg: "复制到剪贴板成功"
         });
-    },
-    onCopy() {
-      this.$store.commit("SNACK_BAR_CHANGE", {
-        snackbar: true,
-        snackMsg: "复制到剪贴板成功"
-      });
-    },
-    openLink(link) {
-      window.open(link);
-    },
-    showImagePop(src) {
-      this.$store.commit("IMAGE_POP_CHANGE", {
-        isImagePop: true,
-        imgview: src
-      });
+      },
+      openLink(link) {
+        window.open(link);
+      },
+      showImagePop(src) {
+        this.$store.commit("IMAGE_POP_CHANGE", {
+          isImagePop: true,
+          imgview: src
+        });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss">
-.wrap {
-  width: 80%;
-  text-align: center;
-}
-.mu-linear-progress {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-.m-upload {
-  position: relative;
-  .dragcover {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-  }
-  .dragbox {
-    width: 100%;
-    height: 300px;
-    background-color: #46529d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .wrap {
+    width: 80%;
     text-align: center;
-    margin: 0 auto;
-    .mu-icon-button {
-      width: auto;
-    }
-    .mu-icon {
-      font-size: 100px;
-      color: #fff;
-    }
-    p {
-      color: #fff;
-    }
   }
-  .dragbox.z-active {
-    background-color: #fff;
-    p {
-      color: #46529d;
-    }
-    .mu-icon {
-      color: #46529d;
-    }
-  }
-}
-.file-wrap {
-  text-align: center;
-  .file-button {
+  .mu-linear-progress {
     position: absolute;
     left: 0;
-    right: 0;
     top: 0;
-    bottom: 0;
-    opacity: 0;
   }
-  .btn-select {
-    margin: 20px 0;
-    input {
+  .m-upload {
+    position: relative;
+    .dragcover {
+      position: absolute;
+      left: 0;
+      top: 0;
       width: 100%;
+      height: 100%;
+      opacity: 0;
     }
-  }
-}
-.card-box {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  .item {
-    padding: 0 10px;
-    flex: 0 1 50%;
-    margin-top: 10px;
-  }
-  .mu-card {
-    .image {
+    .dragbox {
       width: 100%;
-      height: 500px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      cursor: pointer;
-    }
-    .toolbar {
+      height: 300px;
+      background-color: #46529d;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
+      text-align: center;
+      margin: 0 auto;
+      .mu-icon-button {
+        width: auto;
+      }
+      .mu-icon {
+        font-size: 100px;
+        color: #fff;
+      }
+      p {
+        color: #fff;
+      }
     }
-    .mu-text-field,
-    .mu-flat-button {
-      vertical-align: middle;
-    }
-    .mu-text-field-content {
-      position: relative;
-      top: 8px;
-    }
-    .btn {
-      color: #4b5c76;
-    }
-    .btn-copy {
-      min-width: 54px;
+    .dragbox.z-active {
+      background-color: #fff;
+      border: 1px dashed #666;
+      p {
+        color: #46529d;
+      }
+      .mu-icon {
+        color: #46529d;
+      }
     }
   }
-}
+  .file-wrap {
+    text-align: center;
+    .file-button {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0;
+    }
+    .btn-select {
+      margin: 20px 0;
+      input {
+        width: 100%;
+      }
+    }
+  }
+  .card-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .item {
+      padding: 0 10px;
+      flex: 0 1 50%;
+      margin-top: 10px;
+    }
+    .mu-card {
+      .image {
+        width: 100%;
+        height: 500px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        cursor: pointer;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+      }
+      .mu-text-field,
+      .mu-flat-button {
+        vertical-align: middle;
+      }
+      .mu-text-field-content {
+        position: relative;
+        top: 8px;
+      }
+      .btn {
+        color: #4b5c76;
+      }
+      .btn-copy {
+        min-width: 54px;
+      }
+    }
+  }
 </style>

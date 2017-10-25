@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import storage from '../utils/storage'
+import Util from '../utils/common'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -30,7 +31,9 @@ const store = new Vuex.Store({
         // 加载spiner显示
         isSpiner: false,
         // 七牛图片list数量是否变化
-        isPicListChange: true
+        isPicListChange: true,
+        // 七牛API授权
+        qiniuAuth: Util.getQiniuAuth()
 
     },
     getters: {
@@ -80,6 +83,9 @@ const store = new Vuex.Store({
         },
         PICLIST_CHANGE: function(state, payload) {
             state.isPicListChange = payload.isPicListChange;
+        },
+        QINIU_AUTH_CHANGE: function(state, payload) {
+            state.qiniuAuth = payload.qiniuAuth;
         },
     }
 })

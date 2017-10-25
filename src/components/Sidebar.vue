@@ -6,7 +6,7 @@
         <mu-menu-item value="1" title="上传图片" />
         <mu-menu-item value="2" title="图片管理" />
         <mu-menu-item value="3" title="七牛配置" />
-        <mu-menu-item value="4" title="聊天室" />
+        <!-- <mu-menu-item value="4" title="聊天室" /> -->
         <!-- <mu-menu-item value="5" title="New Post" />
         <mu-menu-item value="6" title="Me" />
         <mu-menu-item value="7" title="Log out" @click="logOut" /> -->

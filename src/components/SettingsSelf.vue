@@ -43,15 +43,19 @@
                 if (!this.accessKey && !this.secretKey && !this.bucket && !this.domain) {
                     this.$store.commit("SNACK_BAR_CHANGE", {
                         snackbar: true,
-                        snackMsg: "表单为空，请填写后再保存"
+                        snackMsg: "存在配置项为空，请填写后再保存"
                     });
                     return;
                 }
-                storage.set("qiniu-settings", {
+                const qiniuAuth = {
                     accessKey: this.accessKey,
                     secretKey: this.secretKey,
                     bucket: this.bucket,
                     domain: this.domain
+                }
+                storage.set("qiniu-settings", qiniuAuth);
+                this.$store.commit("QINIU_AUTH_CHANGE", {
+                    qiniuAuth: qiniuAuth
                 });
                 this.$store.commit("SNACK_BAR_CHANGE", {
                     snackbar: true,
@@ -60,12 +64,6 @@
                 this.$store.commit("PICLIST_CHANGE", {
                     isPicListChange: true,
                 });
-                // 更新axios全局header
-                Util.setHeadersCommon({
-                    accessKey: this.accessKey,
-                    secretKey: this.secretKey,
-                    bucket: this.bucket
-                })
                 if (this.$route.name == 'Config') {
                     this.$router.push({
                         name: 'Ground'

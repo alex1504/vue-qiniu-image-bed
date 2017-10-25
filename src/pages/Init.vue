@@ -60,5 +60,17 @@
       text-align:center;
       color: #fff;
     }
+    .title::before{
+      content: "";
+      display: inline-block;
+      width: 60px;
+      height: 50px;
+      background: url('../assets/images/logo.png') no-repeat center center;
+      background-size: contain;
+      vertical-align: middle;
+      position: relative;
+      top: -4px;
+      left: -10px;
+    }
   }
 </style>

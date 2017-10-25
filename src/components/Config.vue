@@ -10,28 +10,40 @@
     import SettingsSelf from './SettingsSelf'
     import storage from '../utils/storage'
     import axios from 'axios'
+    import Util from '../utils/common'
     export default {
         name: 'loginForm',
         components: {
             SettingsSelf
         },
         data() {
-            return {}
+            return {
+            }
         },
         computed: {},
         methods: {
             // 1：私人空间  2：公共空间
             passConfig() {
                 storage.set("qiniu-active", 2);
+                const qiniuAuth = Util.getQiniuAuth();
+                this.$store.commit("QINIU_AUTH_CHANGE", {
+                    qiniuAuth: qiniuAuth
+                });
                 this.$router.push({
                     name: 'Ground'
                 })
             }
         },
         mounted() {
+            if(Util.isSetQiniuAuth()){
+                this.$router.push({
+                    name: 'Ground'
+                })
+                return;
+            }
             this.$store.commit("SNACK_BAR_CHANGE", {
                 snackbar: true,
-                snackMsg: "请设置七牛配置，若跳过，将为你配置体验空间"
+                snackMsg: "请设置七牛配置，若跳过，将进入公共空间"
             });
         }
     }
@@ -52,6 +64,7 @@
         padding: 20px;
         width: 400px;
         height: 600px;
+        max-height: 80vh;
         background-color: #fff;
         text-align: center;
         .checkbox-wrap {

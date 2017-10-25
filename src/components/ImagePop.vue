@@ -10,8 +10,11 @@
       </mu-row>
       <div class="imgview">
         <div class="wrap">
-          <img :src="imgview" :class="{'z-active': isActive}">
-          <mu-float-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
+          <div class="main">
+            <img :src="imgview" :class="{'z-active': isActive}">
+            <mu-float-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
+            <mu-float-button href="http://oydgatjao.bkt.clouddn.com/2017-10-25/65881051.png" download icon="add" class="btn-download" primary />
+          </div>
         </div>
       </div>
     </mu-popup>
@@ -25,7 +28,6 @@
   export default {
     data() {
       return {
-        qiniuAuth: Util.getQiniuAuth(),
         picList: [],
         isActive: false
       }
@@ -49,6 +51,9 @@
       },
       imgview() {
         return this.$store.state.imgview
+      },
+      qiniuAuth() {
+        return this.$store.state.qiniuAuth
       }
     },
     methods: {
@@ -159,8 +164,12 @@
       transform: translate(0, -50%);
       box-shadow: 0px 2px 8px 0px #333;
       .wrap {
+        height: 86%;
+        width: 80%;
+      }
+      .main {
         width: 95%;
-        height: 80%;
+        height: 100%;
         text-align: center;
       }
       img {
@@ -176,6 +185,13 @@
       position: absolute;
       right: 20px;
       top: 20px;
+    }
+     .btn-download {
+      display: block;
+      margin: auto;
+      position: absolute;
+      right: 20px;
+      top: 100px;
     }
   }
 </style>

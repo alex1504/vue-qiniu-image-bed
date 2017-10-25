@@ -68,14 +68,16 @@
                   key: "a",
                   src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
                 }*/
-        ],
-        qiniuAuth: Util.getQiniuAuth()
+        ]
       };
     },
     computed: {
       isPicListChange() {
-        return this.$store.state.isPicListChange;
-      }
+        return this.$store.state.isPicListChange
+      },
+      qiniuAuth(){
+        return this.$store.state.qiniuAuth
+      } 
     },
     methods: {
       reflowed: function() {
@@ -245,7 +247,7 @@
       this.$store.commit("SPINER_CHANGE", {
         isSpiner: true
       });
-      
+      this.picList = [];
       API.getImageList(this.qiniuAuth)
         .then(res => {
           console.log(res);
@@ -375,7 +377,7 @@
     display: flex;
     align-items: center;
     padding: 0 30px;
-    z-index: 3;
+    z-index: 4;
     border-top: 1px solid #d0d0d0;
     background-color: #fff;
     .hd {
@@ -395,5 +397,8 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+  .mu-checkbox-icon-checked{
+    color: #46529d;
   }
 </style>
