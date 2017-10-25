@@ -258,6 +258,10 @@ export default {
         this.$store.commit("SPINER_CHANGE", {
           isSpiner: false
         });
+        this.$store.commit("SNACK_BAR_CHANGE", {
+          snackbar: true,
+          snackMsg: "获取资源失败"
+        });
       });
   }
 };

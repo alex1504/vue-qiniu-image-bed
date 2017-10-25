@@ -87,6 +87,12 @@
           });
           this.picList = data;
         }
+      }).catch(err => {
+        console.log(err);
+        this.$store.commit("SNACK_BAR_CHANGE", {
+          snackbar: true,
+          snackMsg: "获取资源失败"
+        });
       });
     },
     activated() {}
