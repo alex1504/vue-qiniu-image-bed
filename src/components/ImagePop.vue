@@ -1,11 +1,9 @@
 <template>
   <div class="m-img-pop">
     <mu-popup position="left" popupClass="popup-left" :open="isImagePop" @close="close()">
-      <!-- <mu-raised-button label="关闭弹框" @click="close()" primary fullWidth/> -->
       <mu-row class="imgls" gutter>
         <mu-col class="imgbox" v-for="(item,index) in picList" :key="index" width="50" tablet="30" desktop="30">
           <div class="image" :style="'background-image:url('+item.src+')'" @click="showImageView(item.src)"></div>
-          <!-- <img :src="item.src" @click="showImageView(item.src)"> -->
         </mu-col>
       </mu-row>
       <div class="imgview">
@@ -13,8 +11,11 @@
           <div class="main">
             <img :src="imgview" :class="{'z-active': isActive}">
             <mu-float-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
-            <mu-float-button href="http://oydgatjao.bkt.clouddn.com/2017-10-25/65881051.png" download icon="add" class="btn-download" primary />
           </div>
+          <div>
+            <a :href="imgview" download></a>下载</a>
+          </div>
+          <mu-icon value="file-download" :size="32"/>
         </div>
       </div>
     </mu-popup>
@@ -185,13 +186,6 @@
       position: absolute;
       right: 20px;
       top: 20px;
-    }
-     .btn-download {
-      display: block;
-      margin: auto;
-      position: absolute;
-      right: 20px;
-      top: 100px;
     }
   }
 </style>
