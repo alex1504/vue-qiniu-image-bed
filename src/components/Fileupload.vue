@@ -40,6 +40,7 @@
   import axios from "axios";
   import API from "../api/index";
   import ImagePop from "./ImagePop";
+  import auth from '../api/config'
   export default {
     data() {
       return {
@@ -84,14 +85,14 @@
           return;
         }
         
-        API.uploadFile(files).then(res => {
+        API.uploadFile(auth, files).then(res => {
           console.log(res.data);
           if (res.data instanceof Array && res.data.length) {
             res.data.forEach(obj => {
               this.picList.push({
                 hash: obj.hash,
-                key: res.data.key,
-                src: `${this.domain}/${res.data.key}`
+                key: obj.key,
+                src: `${this.domain}/${obj.key}`
               });
             });
             this.$store.commit("SNACK_BAR_CHANGE", {
@@ -129,7 +130,7 @@
         }
        
         this.isUpload = true;
-        API.uploadFile(e.target.files).then(res => {
+        API.uploadFile(auth,e.target.files).then(res => {
           console.log(res.data);
           if (res.data instanceof Array && res.data.length) {
             res.data.forEach(obj => {

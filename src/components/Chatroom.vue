@@ -4,7 +4,7 @@
             <div class="room-user">
                 <!-- swiper -->
                 <swiper :options="swiperOption">
-                    <swiper-slide v-for="user,index in users">
+                    <swiper-slide v-for="(user,index) in users" :key="index">
                         <img :src="user.avatar">
                     </swiper-slide>
     
@@ -17,7 +17,7 @@
     
         </div>
         <div class="chat-area">
-            <div class="chat" v-for="dialogue in dialogues">
+            <div class="chat" v-for="(dialogue,index) in dialogues" :key="index">
                 <div class="enter-tip" v-if="dialogue.type == 0">
                     [{{dialogue.user}}
     

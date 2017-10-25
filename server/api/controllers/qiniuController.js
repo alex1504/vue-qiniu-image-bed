@@ -3,6 +3,7 @@ const request = require('superagent')
 const formidable = require('formidable')
 const util = require('util');
 const qiniuUtil = require('../utils/qiniu')
+const bodyParser = require('body-parser')
 
 function renderUniFileName(type) {
   const map = {
@@ -30,15 +31,12 @@ function renderUniFileName(type) {
 
 /** 
  * [renderUploadToken Function]
- * @param req: {{object}}
- * @param res: {{object}}
+ * @param fields: {{object}}
  */
-function renderUploadToken(req, res) {
-  // 注意header中的键名都变为了小写，即便前端传过来包含大写字母
-  const accessKey = req.headers.accesskey || '';
-  const secretKey = req.headers.secretkey || '';
-  const bucket = req.headers.bucket || '';
-
+function renderUploadToken(fields) {
+  const accessKey = fields.accessKey || '';
+  const secretKey = fields.secretKey || '';
+  const bucket = fields.bucket || '';
 
   const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
@@ -62,23 +60,18 @@ function renderUploadToken(req, res) {
  */
 function uploadFile(req, res) {
   const form = new formidable.IncomingForm();
-  const files = [];
 
-  form.on('file', function (name, file) {
-    files.push(file);
-
-  });
-  form.on('end', function () {
-    const uploadPromises = files.map(file => {
-      return new Promise((resolve, reject) => {
-        const localFile = file.path;
-        const config = new qiniu.conf.Config();
-        const formUploader = new qiniu.form_up.FormUploader(config);
-        const putExtra = new qiniu.form_up.PutExtra();
-        const key = renderUniFileName(file.type);
-        console.log(key)
-        const uploadToken = renderUploadToken(req, res);
-
+  const uploadPromises = []
+  form.parse(req, function (err, fields, files) {
+    for (var fileKey in files) {
+      const file = files[fileKey];
+      const localFile = file.path;
+      const config = new qiniu.conf.Config();
+      const formUploader = new qiniu.form_up.FormUploader(config);
+      const putExtra = new qiniu.form_up.PutExtra();
+      const key = renderUniFileName(file.type);
+      const uploadToken = renderUploadToken(fields);
+      const uploadPromise = new Promise((resolve, reject) => {
         // 文件上传
         formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr,
           respBody, respInfo) {
@@ -98,8 +91,10 @@ function uploadFile(req, res) {
             console.log(respBody);
           }
         });
+
       })
-    })
+      uploadPromises.push(uploadPromise)
+    }
     Promise.all(uploadPromises)
       .then(resp => {
         console.log(resp)
@@ -112,7 +107,7 @@ function uploadFile(req, res) {
 
   });
 
-  form.parse(req);
+
 
 };
 
@@ -124,16 +119,16 @@ function uploadFile(req, res) {
  * @param fileName: {{string}}
  */
 function getImageInfo(req, res) {
-  const accessKey = req.headers.accesskey || '';
-  const secretKey = req.headers.secretkey || '';
-  const bucket = req.headers.bucket || '';
+  const accessKey = req.body.accessKey || '';
+  const secretKey = req.body.secretKey || '';
+  const bucket = req.body.bucket || '';
 
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
   var config = new qiniu.conf.Config();
   var bucketManager = new qiniu.rs.BucketManager(mac, config);
 
 
-  var key = req.body.fileName || "17-10-11/89379599.jpg";
+  var key = req.body.fileName || '';
   bucketManager.stat(bucket, key, function (err, respBody, respInfo) {
     if (err) {
       console.log(err);
@@ -165,20 +160,19 @@ function getImageInfo(req, res) {
  * @param bucket：: {{string}}
  */
 function getImageList(req, res) {
-  const accessKey = req.headers.accesskey || '';
-  const secretKey = req.headers.secretkey || '';
-  const bucket = req.headers.bucket || '';
+  const accessKey = req.body.accessKey || '';
+  const secretKey = req.body.secretKey || '';
+  const bucket = req.body.bucket || '';
 
-  console.log(req)
-
+  console.log(bucket)
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
   if (!Object.keys(req.body).length) {
     req.body = "";
   }
-  const accessToken = qiniuUtil.generateAccessToken(mac, "http://rsf.qbox.me/list?bucket=image", req.body)
+  const accessToken = qiniuUtil.generateAccessToken(mac, "http://rsf.qbox.me/list?bucket=" + bucket)
   request
-    .post('http://rsf.qbox.me/list?bucket=image')
+    .post('http://rsf.qbox.me/list?bucket=' + bucket)
     .set('Host', 'rsf.qbox.me')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Authorization', accessToken)
@@ -190,10 +184,10 @@ function getImageList(req, res) {
           code: 200,
           data: data.items
         })
-      }else{
+      } else {
         res.json({
-            code: resp.status,
-            msg: JSON.parse(resp.text).error
+          code: resp.status,
+          msg: JSON.parse(resp.text).error
         })
       }
     });
@@ -208,10 +202,9 @@ function getImageList(req, res) {
  * @param fileName: {{string}}
  */
 function deleteImage(req, res) {
-  const accessKey = req.headers.accesskey || '';
-  const secretKey = req.headers.secretkey || '';
-  const bucket = req.headers.bucket || '';
-
+  const accessKey = req.body.accessKey || '';
+  const secretKey = req.body.secretKey || '';
+  const bucket = req.body.bucket || '';
   const fileName = req.body.fileName || '';
 
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);

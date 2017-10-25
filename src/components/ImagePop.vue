@@ -19,10 +19,9 @@
 </template>
 
 <script>
-  import posters from '../mocks/posters.json'
-  import placehold from '../assets/images/avatar_placehold.png'
   import API from '../api/index'
   import storage from '../utils/storage'
+  import auth from '../api/config'
   export default {
     data() {
       return {
@@ -79,7 +78,7 @@
       }
     },
     mounted() {
-      API.getImageList().then(res => {
+      API.getImageList(auth).then(res => {
         if (res.data.code == 200) {
           let data = res.data.data;
           data.sort((obj1, obj2) => {
