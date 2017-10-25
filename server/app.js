@@ -11,8 +11,6 @@ app.use(cors());
 app.all('*', function(req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET");
-    res.setHeader("Access-Control-Max-Age", "3600");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, accessKey, secretKey, bucket");
     next();
 });
 app.use(bodyParser.urlencoded({
@@ -22,7 +20,7 @@ app.use(bodyParser.json());
 
 // 应用层路由
 app.route('/')
-    .get(function(req, res) {
+    .get(function(req, res,next) {
         res.json({
             code: 200,
             msg: "Hellow, this is jerry's qiniu server",

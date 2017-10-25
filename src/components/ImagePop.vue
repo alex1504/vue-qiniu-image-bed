@@ -64,13 +64,6 @@
         });
       },
       closeImagePop() {
-        if (this.imgview == placehold) {
-          this.$store.commit('SNACK_BAR_CHANGE', {
-            snackbar: true,
-            snackMsg: 'Please choose a poster and then continue'
-          })
-          return;
-        }
         this.$store.commit('POSTER_CHANGE', {
           poster: this.imgview
         })
