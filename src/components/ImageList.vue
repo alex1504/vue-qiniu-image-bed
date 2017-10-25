@@ -47,7 +47,7 @@
 <script>
   import API from "../api/index";
   import storage from "../utils/storage";
-  import auth from "../api/config";
+  import Util from "../utils/common"
   export default {
     name: "picList",
     data() {
@@ -55,24 +55,21 @@
         isRequesting: false,
         isDelete: false,
         count: 4,
-        domain:
-          (storage.get("qiniu-settings") &&
-            storage.get("qiniu-settings").domain) ||
-          "",
         selectItems: {
           keys: [],
           data: []
         },
-        clipboardTxt: "aaaa",
+        clipboardTxt: "",
         selectList: [],
         isSelectAll: false,
         picList: [
           /* {
-                hash: "",
-                key: "a",
-                src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
-              }*/
-        ]
+                  hash: "",
+                  key: "a",
+                  src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
+                }*/
+        ],
+        qiniuAuth: Util.getQiniuAuth()
       };
     },
     computed: {
@@ -112,7 +109,7 @@
         console.log(item.key);
         this.isDelete = true;
         API.deleteImage(
-            Object.assign(auth, {
+            Object.assign(this.qiniuAuth, {
               fileName: item.key
             })
           )
@@ -155,7 +152,7 @@
           selectIndex = parseInt(selectIndex);
           return new Promise((resolve, reject) => {
             API.deleteImage(
-                Object.assign(auth, {
+                Object.assign(this.qiniuAuth, {
                   fileName: this.picList[selectIndex].key
                 })
               )
@@ -241,14 +238,15 @@
       }
     },
     activated() {
-      console.log('imageList')
+      console.log("imageList");
       if (!this.isPicListChange) {
         return;
       }
       this.$store.commit("SPINER_CHANGE", {
         isSpiner: true
       });
-      API.getImageList(auth)
+      
+      API.getImageList(this.qiniuAuth)
         .then(res => {
           console.log(res);
           if (res.data.code == 200) {
@@ -260,7 +258,7 @@
               return {
                 hash: obj.hash,
                 key: obj.key,
-                src: `${this.domain}/${obj.key}`,
+                src: `${this.qiniuAuth.domain}/${obj.key}`,
                 putTime: obj.putTime
               };
             });

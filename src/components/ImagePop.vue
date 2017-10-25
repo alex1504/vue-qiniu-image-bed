@@ -21,11 +21,11 @@
 <script>
   import API from '../api/index'
   import storage from '../utils/storage'
-  import auth from '../api/config'
+  import Util from "../utils/common"
   export default {
     data() {
       return {
-        domain: storage.get("qiniu-settings") && storage.get("qiniu-settings").domain || "",
+        qiniuAuth: Util.getQiniuAuth(),
         picList: [],
         isActive: false
       }
@@ -75,7 +75,7 @@
         this.close('left');
       },
       getImageList() {
-        API.getImageList(auth).then(res => {
+        API.getImageList(this.qiniuAuth).then(res => {
           if (res.data.code == 200) {
             let data = res.data.data;
             data.sort((obj1, obj2) => {
@@ -85,7 +85,7 @@
               return {
                 hash: obj.hash,
                 key: obj.key,
-                src: `${this.domain}/${obj.key}`,
+                src: `${this.qiniuAuth.domain}/${obj.key}`,
                 putTime: obj.putTime
               };
             });

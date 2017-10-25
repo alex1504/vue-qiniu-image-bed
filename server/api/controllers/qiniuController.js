@@ -164,7 +164,7 @@ function getImageList(req, res) {
   const secretKey = req.body.secretKey || '';
   const bucket = req.body.bucket || '';
 
-  console.log(bucket)
+  console.log(accessKey)
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
   if (!Object.keys(req.body).length) {

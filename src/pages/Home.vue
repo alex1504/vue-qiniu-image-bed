@@ -33,7 +33,7 @@
   import PostDetail from "../components/PostDetail.vue";
   import Snackbar from "../components/Snackbar.vue";
   import ImagePop from "../components/ImagePop.vue";
-  import Backtop from "../components/Backtop.vue"
+  import Backtop from "../components/Backtop.vue";
   export default {
     name: "home",
     data() {
@@ -57,7 +57,8 @@
       Backtop
     },
     methods: {},
-    mounted() {}
+    mounted() {
+    }
   };
 </script>
 
@@ -74,8 +75,7 @@
   .container {
     width: 100%;
     height: 100%;
-  }
-  // main
+  } // main
   .m-main {
     position: relative;
     margin-left: 300px;
@@ -95,5 +95,4 @@
     margin-top: 30px;
     margin-left: -30px;
   }
-
 </style>

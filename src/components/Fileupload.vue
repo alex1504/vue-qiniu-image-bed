@@ -40,14 +40,10 @@ import storage from "../utils/storage";
 import axios from "axios";
 import API from "../api/index";
 import ImagePop from "./ImagePop";
-import auth from "../api/config";
+import Util from "../utils/common";
 export default {
   data() {
     return {
-      domain:
-        (storage.get("qiniu-settings") &&
-          storage.get("qiniu-settings").domain) ||
-        "",
       isDragOver: false,
       picList: [
         /* {
@@ -55,7 +51,8 @@ export default {
                       src: "http://qiniu1.huzerui.com//2017-10-23/20709373.png"
                     } */
       ],
-      isUpload: false
+      isUpload: false,
+      qiniuAuth: Util.getQiniuAuth()
     };
   },
   components: {},
@@ -88,7 +85,7 @@ export default {
         return;
       }
       this.isUpload = true;
-      API.uploadFile(auth, files)
+      API.uploadFile(this.qiniuAuth, files)
         .then(res => {
           console.log(res.data);
           if (res.data instanceof Array && res.data.length) {
@@ -96,7 +93,7 @@ export default {
               this.picList.push({
                 hash: obj.hash,
                 key: obj.key,
-                src: `${this.domain}/${obj.key}`
+                src: `${this.qiniuAuth.domain}/${obj.key}`
               });
             });
             this.$store.commit("SNACK_BAR_CHANGE", {
@@ -142,7 +139,7 @@ export default {
         return;
       }
       this.isUpload = true;
-      API.uploadFile(auth, e.target.files)
+      API.uploadFile(this.qiniuAuth, e.target.files)
         .then(res => {
           console.log(res.data);
           if (res.data instanceof Array && res.data.length) {
@@ -150,7 +147,7 @@ export default {
               this.picList.push({
                 hash: obj.hash,
                 key: res.data.key,
-                src: `${this.domain}/${obj.key}`
+                src: `${this.qiniuAuth.domain}/${obj.key}`
               });
             });
             this.$store.commit("SNACK_BAR_CHANGE", {

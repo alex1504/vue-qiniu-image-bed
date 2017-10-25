@@ -1,52 +1,38 @@
 <template>
-    <div class="m-login">
-        <Settings>
-            <div slot="header">
-                设置七牛配置
-            </div>
+    <div class="m-config">
+        <SettingsSelf>
             <mu-raised-button slot="footer" label="跳过" class="demo-raised-button" secondary @click="passConfig" />
-        </Settings>
-        <!--   <mu-linear-progress v-show="isRequesting" />
-            <h3>登录</h3>
-            <form action="#">
-                <mu-text-field hintText="用户名" v-model="username" />
-                <mu-text-field hintText="密码" v-model="password" type="password" />
-                <div class="checkbox-wrap">
-                    <mu-checkbox label="记住我" class="demo-checkbox" v-model="isChecked" />
-                    <div class="tip">还没有账号？点此
-                        <a @click="switchLoginToRegist">注册</a>
-                    </div>
-                </div>
-        
-                <div class="button-wrap">
-                    <mu-raised-button label="登录" class="demo-raised-button" primary @click="login" />
-                </div>
-            </form> -->
+        </SettingsSelf>
     </div>
 </template>
 
 <script>
-    import Settings from './Settings'
+    import SettingsSelf from './SettingsSelf'
     import storage from '../utils/storage'
     import axios from 'axios'
     export default {
         name: 'loginForm',
         components: {
-            Settings
+            SettingsSelf
         },
         data() {
-            return {
-      
-            }
+            return {}
         },
-        computed: {
-        },
+        computed: {},
         methods: {
-            passConfig(){
+            // 1：私人空间  2：公共空间
+            passConfig() {
+                storage.set("qiniu-active", 2);
                 this.$router.push({
                     name: 'Ground'
                 })
             }
+        },
+        mounted() {
+            this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "请设置七牛配置，若跳过，将为你配置体验空间"
+            });
         }
     }
 </script>
@@ -60,10 +46,10 @@
         position: absolute;
         top: 0;
     }
-    .m-login {
+    .m-config {
         position: relative;
         box-sizing: border-box;
-        padding: 20px 0;
+        padding: 20px;
         width: 400px;
         height: 600px;
         background-color: #fff;

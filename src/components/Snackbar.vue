@@ -36,7 +36,7 @@
                         snackMsg:'',
                         snackbar: false,
                     });
-                }, 2000)
+                }, 3000)
             },
             hideSnackbar() {
                 this.$store.commit('SNACK_BAR_CHANGE',{
