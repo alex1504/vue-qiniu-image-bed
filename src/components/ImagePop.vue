@@ -11,7 +11,7 @@
       <div class="imgview">
         <div class="wrap">
           <img :src="imgview" :class="{'z-active': isActive}">
-          <mu-raised-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
+          <mu-float-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
         </div>
       </div>
     </mu-popup>
@@ -33,9 +33,14 @@
     watch: {
       imgview() {
         this.isActive = true;
-        setTimeout(()=>{
+        setTimeout(() => {
           this.isActive = false
-        },300)
+        }, 300)
+      },
+      isImagePop(isImagePop) {
+        if (isImagePop) {
+          this.getImageList()
+        }
       }
     },
     computed: {
@@ -68,34 +73,36 @@
           poster: this.imgview
         })
         this.close('left');
+      },
+      getImageList() {
+        API.getImageList(auth).then(res => {
+          if (res.data.code == 200) {
+            let data = res.data.data;
+            data.sort((obj1, obj2) => {
+              return obj2.putTime - obj1.putTime;
+            });
+            data = data.map(obj => {
+              return {
+                hash: obj.hash,
+                key: obj.key,
+                src: `${this.domain}/${obj.key}`,
+                putTime: obj.putTime
+              };
+            });
+            this.picList = data;
+          }
+        }).catch(err => {
+          console.log(err);
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "获取资源失败"
+          });
+        });
       }
     },
     mounted() {
-      API.getImageList(auth).then(res => {
-        if (res.data.code == 200) {
-          let data = res.data.data;
-          data.sort((obj1, obj2) => {
-            return obj2.putTime - obj1.putTime;
-          });
-          data = data.map(obj => {
-            return {
-              hash: obj.hash,
-              key: obj.key,
-              src: `${this.domain}/${obj.key}`,
-              putTime: obj.putTime
-            };
-          });
-          this.picList = data;
-        }
-      }).catch(err => {
-        console.log(err);
-        this.$store.commit("SNACK_BAR_CHANGE", {
-          snackbar: true,
-          snackMsg: "获取资源失败"
-        });
-      });
+      console.log(2)
     },
-    activated() {}
   }
 </script>
 
@@ -158,7 +165,7 @@
       }
       img {
         max-height: 100%;
-         &.z-active {
+        &.z-active {
           animation: fadeIn .3s linear;
         }
       }

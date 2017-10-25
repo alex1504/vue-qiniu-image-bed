@@ -173,10 +173,19 @@ function getImageList(req, res) {
   const accessToken = qiniuUtil.generateAccessToken(mac, "http://rsf.qbox.me/list?bucket=" + bucket)
   request
     .post('http://rsf.qbox.me/list?bucket=' + bucket)
+    .timeout(10000)
     .set('Host', 'rsf.qbox.me')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Authorization', accessToken)
     .end((err, resp) => {
+      if(err) {
+        console.log(err);
+        res.json({
+          code: 204,
+          msg: '请求七牛资源失败，请重试'
+        })
+        return;
+      }
       if (resp.status == 200) {
         let data = resp.text.replace(/\\/, "");
         data = JSON.parse(data)
