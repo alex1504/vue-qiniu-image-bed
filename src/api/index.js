@@ -12,8 +12,8 @@ export default {
   uploadFile(auth, files) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
-      Array.prototype.forEach.call(files, (file,index) => {
-        formData.append("file"+index, file, file.name);
+      Array.prototype.forEach.call(files, (file, index) => {
+        formData.append("file" + index, file, file.name);
       })
       for (let key in auth) {
         formData.append(key, auth[key])
@@ -44,13 +44,27 @@ export default {
       });
     })
   },
-  deleteImage(data) {
+  deleteImage(obj) {
     return new Promise((resolve, reject) => {
       axios.post("/image/delete", {
-        accessKey: data.accessKey,
-        secretKey: data.secretKey,
-        bucket: data.bucket,
-        fileName: data.fileName
+        accessKey: obj.accessKey,
+        secretKey: obj.secretKey,
+        bucket: obj.bucket,
+        fileName: obj.fileName
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      });
+    })
+  },
+  uploadFetchUrl(obj) {
+    return new Promise((resolve, reject) => {
+      axios.post("/upload/fetch", {
+        accessKey: obj.accessKey,
+        secretKey: obj.secretKey,
+        bucket: obj.bucket,
+        fetchUrl: obj.fetchUrl
       }).then(res => {
         resolve(res)
       }).catch(err => {

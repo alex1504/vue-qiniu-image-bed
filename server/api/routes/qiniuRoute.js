@@ -15,4 +15,7 @@ module.exports = function (app) {
 
   app.route('/image/delete')
     .post(qiniu.deleteImage);
+
+  app.route('/upload/fetch')
+    .post(qiniu.fetchAndUpload);
 }

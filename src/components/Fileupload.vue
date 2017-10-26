@@ -14,6 +14,11 @@
       <mu-flat-button icon="image" label="选择文件" class="btn-select" primary>
         <input type="file" class="file-button" @change="uploadFile" multiple>
       </mu-flat-button>
+      <div class="url-upload">
+        <mu-text-field hintText="上传在线图片例如：http://devtools.qiniu.com/qiniu.png" v-model="fetchUrl">
+        </mu-text-field>
+        <mu-raised-button label="上传" class="btn-url-upload" primary @click.native="uploadFetchUrl" />
+      </div>
     </div>
     <div class="card-box" v-show="picList.length">
       <div class="item" v-for="(item,index) in picList" :key="index">
@@ -47,19 +52,20 @@
         isDragOver: false,
         picList: [
           /* {
-                        key: 'a.jpg',
-                        src: "http://qiniu1.huzerui.com//2017-10-23/20709373.png"
-                      } */
+                          key: 'a.jpg',
+                          src: "http://qiniu1.huzerui.com//2017-10-23/20709373.png"
+                        } */
         ],
-        isUpload: false
+        isUpload: false,
+        fetchUrl: ""
       };
     },
     computed: {
       qiniuAuth() {
-        return this.$store.state.qiniuAuth
+        return this.$store.state.qiniuAuth;
       },
-      tip(){
-        return this.isDragOver ? '松开鼠标开始上传' : '拖拽图片到这里上传'
+      tip() {
+        return this.isDragOver ? "松开鼠标开始上传" : "拖拽图片到这里上传";
       }
     },
     methods: {
@@ -193,6 +199,60 @@
           isImagePop: true,
           imgview: src
         });
+      },
+      uploadFetchUrl() {
+        if (!this.fetchUrl) {
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "在线图片地址不能为空"
+          });
+          return;
+        }
+        if (!this.fetchUrl.match(/\.jpg|\.jpeg|\.png|\.gif]$/)) {
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "只支持图片格式的在线地址"
+          });
+          return;
+        }
+        this.isUpload = true;
+        API.uploadFetchUrl({
+            fetchUrl: this.fetchUrl,
+            ...this.qiniuAuth
+          })
+          .then(res => {
+            console.log(res)
+            if (res.data.code == 200) {
+              this.picList.push({
+                hash: res.data.hash,
+                key: res.data.key,
+                src: `${this.qiniuAuth.domain}/${res.data.key}`
+              });
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传成功"
+              });
+            }else if(res.data.code == 204) {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "请检查七牛配置是否正确"
+              });
+            } else {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "上传失败"
+              });
+            }
+            this.isUpload = false;
+          })
+          .catch(err => {
+            console.log(err);
+            this.isUpload = false;
+            this.$store.commit("SNACK_BAR_CHANGE", {
+              snackbar: true,
+              snackMsg: "上传失败"
+            });
+          });
       }
     }
   };
@@ -250,6 +310,10 @@
     }
   }
   .file-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     .file-button {
       position: absolute;
@@ -260,9 +324,19 @@
       opacity: 0;
     }
     .btn-select {
+      flex-basis: 400px;
       margin: 20px 0;
       input {
         width: 100%;
+      }
+    }
+    .url-upload {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      .mu-text-field {
+        top: 8px;
+        flex: 1;
       }
     }
   }
