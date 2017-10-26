@@ -1,14 +1,14 @@
 {
-  "name": "vue-express",
+  "name": "Niu-Niu-Image-Bed",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Free bed, bed outside the chain, image upload, CDN acceleration",
   "author": "alex1504 <alex1504@163.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "server": "nodemon server/app.js"
+    "server": "nodemon server/server.js"
   },
   "dependencies": {
     "axios": "^0.16.2",

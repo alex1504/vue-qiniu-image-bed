@@ -2,10 +2,10 @@ import axios from 'axios'
 import storage from '../utils/storage'
 
 if (process.env.NODE_ENV == 'development') {
-  // axios.defaults.baseURL = '/api';
-  axios.defaults.baseURL = 'http://127.0.0.1:3000';
+  axios.defaults.baseURL = '/api';
+  // axios.defaults.baseURL = 'http://127.0.0.1:3000';
 } else {
-  axios.defaults.baseURL = 'https://qiniu-server.herokuapp.com';
+  axios.defaults.baseURL = 'http://139.159.235.194:3000';
 }
 
 export default {

@@ -1,32 +1,37 @@
 var app = require('express')()
 var server = require('http').createServer(app)
 var cors = require('cors')
-    // var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
 
+/* var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000
+var ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0' */
 var port = process.env.PORT || 3000
+
+
 var bodyParser = require('body-parser')
+
 
 // 应用层中间件
 app.use(cors());
-app.all('*', function(req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, GET");
-    next();
+app.all('*', function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET");
+  next();
 });
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 app.use(bodyParser.json());
 
 // 应用层路由
 app.route('/')
-    .get(function(req, res,next) {
-        res.json({
-            code: 200,
-            msg: "Hellow, this is jerry's qiniu server",
-            node_version: "7.1.0"
-        })
-    });
+  .get(function (req, res, next) {
+    res.json({
+      code: 200,
+      msg: "Hellow, this is jerry's qiniu server",
+      node_version: "7.1.0"
+    })
+  });
 
 var qiniuRoute = require('./api/routes/qiniuRoute')
 qiniuRoute(app)
@@ -65,5 +70,7 @@ io.sockets.on('connection', function (socket) {
 }); */
 
 server.listen(port);
+console.log(`Server running on port ${port}`); 
 
-console.log(`You server now listening on port: ${port} `);
+/* server.listen(port,ip);
+console.log('Server running on http://%s:%s', ip, port); */

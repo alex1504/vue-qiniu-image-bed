@@ -10,10 +10,8 @@
         <div class="wrap">
           <div class="main">
             <img :src="imgview" :class="{'z-active': isActive}">
-            <mu-float-button icon="close" class="btn-confirm" primary @click="closeImagePop" primary />
-          </div>
-          <div>
-            <a :href="imgview" download></a>下载</a>
+            <mu-float-button icon="close" class="btn-confirm" @click="closeImagePop" primary />
+            <mu-float-button :href="imgview" download icon="add" class="btn-download" primary />
           </div>
           <mu-icon value="file-download" :size="32"/>
         </div>
@@ -107,7 +105,6 @@
       }
     },
     mounted() {
-      console.log(2)
     },
   }
 </script>
@@ -186,6 +183,13 @@
       position: absolute;
       right: 20px;
       top: 20px;
+    }
+    .btn-download{
+      display: block;
+      margin: auto;
+      position: absolute;
+      right: 20px;
+      top: 100px;
     }
   }
 </style>

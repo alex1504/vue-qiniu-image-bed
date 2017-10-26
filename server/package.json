@@ -1,8 +1,17 @@
 {
   "name": "vue-express-app-server",
+  "main": "server.js",
   "version": "7.1.0",
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alex1504/vue-qiniu-image-bed.git"
   },
   "dependencies": {
     "agentkeepalive": "3.3.0",
