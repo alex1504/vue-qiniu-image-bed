@@ -72,9 +72,9 @@ function uploadFile(req, res) {
       const config = new qiniu.conf.Config();
       const formUploader = new qiniu.form_up.FormUploader(config);
       const putExtra = new qiniu.form_up.PutExtra();
-      let key = '';
       const uploadToken = renderUploadToken(fields);
-      
+
+      let key = '';
       if (isCustom == '1') {
         // 用户自定义前缀
         key = prefix + fileName;
@@ -119,10 +119,73 @@ function uploadFile(req, res) {
       })
 
   });
-
-
-
 };
+
+
+function fetchAndUpload(req, res) {
+  const accessKey = req.body.accessKey || '';
+  const secretKey = req.body.secretKey || '';
+  const bucket = req.body.bucket || '';
+  const fetchUrl = req.body.fetchUrl || '';
+  const isCustom = req.body.isCustom || -1;
+  const prefix = req.body.prefix || '';
+  const matchType = fetchUrl.match(/\.jpg|\.jpeg|\.png|\.gif$/)
+
+  if (!fetchUrl) {
+    res.json({
+      code: 400,
+      msg: '参数fetchUrl不能为空'
+    })
+    return;
+  }
+
+  if (!matchType) {
+    res.json({
+      code: 415,
+      msg: '只支持图片链接'
+    })
+    return;
+  }
+  const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+  const config = new qiniu.conf.Config();
+  const bucketManager = new qiniu.rs.BucketManager(mac, config);
+  const fileName = fetchUrl.match(/[^\/\\]+$/) && fetchUrl.match(/[^\/\\]+$/)[0];
+
+  let key = '';
+  if (isCustom == '1') {
+    // 用户自定义前缀
+    key = prefix + fileName;
+  } else {
+    // 默认前缀
+    key = renderUniFileName(matchType[0]);
+  }
+
+  bucketManager.fetch(fetchUrl, bucket, key, function (err, respBody, respInfo) {
+    if (err) {
+      console.log(err);
+      res.json({
+        code: 204,
+        msg: err.error
+      })
+      return;
+      //throw err;
+    } else {
+      if (respInfo.statusCode == 200) {
+        res.json({
+          code: 200,
+          hash: respBody.hash,
+          key: respBody.key
+        })
+      } else {
+        console.log(respInfo)
+        res.json({
+          code: respInfo.status,
+          error: respBody.error
+        })
+      }
+    }
+  });
+}
 
 /** 
  * [getImageInfo Function]
@@ -257,59 +320,6 @@ function deleteImage(req, res) {
     });
 }
 
-function fetchAndUpload(req, res) {
-  const accessKey = req.body.accessKey || '';
-  const secretKey = req.body.secretKey || '';
-  const bucket = req.body.bucket || '';
-  const resUrl = req.body.fetchUrl || '';
-  const matchType = resUrl.match(/\.jpg|\.jpeg|\.png|\.gif]$/)
-
-  if (!resUrl) {
-    res.json({
-      code: 400,
-      msg: '参数fetchUrl不能为空'
-    })
-    return;
-  }
-
-  if (!matchType) {
-    res.json({
-      code: 415,
-      msg: '只支持图片链接'
-    })
-    return;
-  }
-  const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-  const config = new qiniu.conf.Config();
-  const bucketManager = new qiniu.rs.BucketManager(mac, config);
-  const key = renderUniFileName(matchType[0]);
-
-  bucketManager.fetch(resUrl, bucket, key, function (err, respBody, respInfo) {
-    if (err) {
-      console.log(err);
-      res.json({
-        code: 204,
-        msg: err.error
-      })
-      return;
-      //throw err;
-    } else {
-      if (respInfo.statusCode == 200) {
-        res.json({
-          code: 200,
-          hash: respBody.hash,
-          key: respBody.key
-        })
-      } else {
-        console.log(respInfo)
-        res.json({
-          code: respInfo.status,
-          error: respBody.error
-        })
-      }
-    }
-  });
-}
 
 
 module.exports = {

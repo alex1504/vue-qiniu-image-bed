@@ -232,6 +232,7 @@
         this.isUpload = true;
         API.uploadFetchUrl({
             fetchUrl: this.fetchUrl,
+            uploadOptions: this.uploadOptions,
             ...this.qiniuAuth
           })
           .then(res => {

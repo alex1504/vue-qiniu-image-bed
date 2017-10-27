@@ -35,6 +35,25 @@ export default {
       });
     })
   },
+  uploadFetchUrl(obj) {
+    return new Promise((resolve, reject) => {
+      let postData = {
+        accessKey: obj.accessKey,
+        secretKey: obj.secretKey,
+        bucket: obj.bucket,
+        fetchUrl: obj.fetchUrl
+      }
+      if(obj.uploadOptions){
+        postData.isCustom= "1"
+        postData.prefix = obj.uploadOptions.prefix
+      }
+      axios.post("/upload/fetch", postData).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      });
+    })
+  },
   getImageList(auth) {
     return new Promise((resolve, reject) => {
       axios.post("/imageList", {
@@ -61,19 +80,6 @@ export default {
         reject(err)
       });
     })
-  },
-  uploadFetchUrl(obj) {
-    return new Promise((resolve, reject) => {
-      axios.post("/upload/fetch", {
-        accessKey: obj.accessKey,
-        secretKey: obj.secretKey,
-        bucket: obj.bucket,
-        fetchUrl: obj.fetchUrl
-      }).then(res => {
-        resolve(res)
-      }).catch(err => {
-        reject(err)
-      });
-    })
   }
+  
 }
