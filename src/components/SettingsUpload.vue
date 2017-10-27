@@ -121,6 +121,9 @@
             font-size: 20px;
             color: #ff4081;
         }
+        .mu-text-field{
+            width: 80%;
+        }
     }
     .m-pop-up {
         position: fixed;

@@ -2,6 +2,18 @@
   <div class="m-piclist">
     <mu-linear-progress v-show="isDelete" />
     <mu-linear-progress v-show="isRequesting" />
+    <div class="m-order">
+      <mu-select-field label="排序" v-model="dateOrder">
+        <mu-menu-item value="1" title="按上传日期降序" />
+        <mu-menu-item value="2" title="按上传日期升序" />
+      </mu-select-field>
+      <mu-select-field label="筛选" v-model="filterType">
+        <mu-menu-item value="1" title="显示所有图片类型" />
+        <mu-menu-item value="2" title="只显示jpg" />
+        <mu-menu-item value="3" title="只显示png" />
+        <mu-menu-item value="4" title="只显示gif" />
+      </mu-select-field>
+    </div>
     <transition name="slide">
       <div class="m-tip" v-show="selectList.length">
         <div class="tip">已选择：{{selectList.length}}个项目</div>
@@ -10,35 +22,38 @@
         </div>
       </div>
     </transition>
-    <mu-row gutter>
-      <mu-col class="item" width="20" tablet="50" desktop="25" v-for="(item,index) in picList" :key="index">
-        <mu-card>
-          <mu-checkbox name="group" label="" :nativeValue="index.toString()" class="demo-checkbox" v-model="selectList" />
-          <mu-card-media>
-            <div class="image" :style="'background-image:url('+item.src+')'"></div>
-            <div class="cover" @click="showImagePop(item.src)"></div>
-            <!-- <img :src="item.src" /> -->
-          </mu-card-media>
-          <mu-card-text>
-            <mu-text-field :value="item.src" @mouseenter.native="onInputMouseenter" /><br/>
-          </mu-card-text>
-          <mu-card-actions>
-            <mu-flat-button label="复制" v-clipboard:copy="item.src" v-clipboard:success="onCopy">
-              <i class="fa fa-copy"></i>
-            </mu-flat-button>
-            <mu-flat-button label="删除" @click="deleteItem(item,index)">
-              <i class="fa fa-trash-o"></i>
-            </mu-flat-button>
-            <mu-flat-button label="打开" @click="openLink(item.src)">
-              <i class="fa fa-external-link"></i>
-            </mu-flat-button>
-            <mu-flat-button label="选择" @click="selectItem(index)">
-              <i class="fa fa-mouse-pointer"></i>
-            </mu-flat-button>
-          </mu-card-actions>
-        </mu-card>
-      </mu-col>
-    </mu-row>
+    <div v-for="(dateSplitItem,index) in dealPicList" :key="index">
+      <p class="date"><i class="fa fa-clock-o"></i>{{dateSplitItem.date}}</p>
+      <mu-row gutter>
+        <mu-col class="item" width="20" tablet="50" desktop="25" v-for="(item,index) in dateSplitItem.list" :key="index">
+          <mu-card>
+            <mu-checkbox name="group" label="" :nativeValue="index.toString()" class="demo-checkbox" v-model="selectList" />
+            <mu-card-media>
+              <div class="image" :style="'background-image:url('+item.src+')'"></div>
+              <div class="cover" @click="showImagePop(item.src)"></div>
+              <!-- <img :src="item.src" /> -->
+            </mu-card-media>
+            <mu-card-text>
+              <mu-text-field :value="item.src" @mouseenter.native="onInputMouseenter" /><br/>
+            </mu-card-text>
+            <mu-card-actions>
+              <mu-flat-button label="复制" v-clipboard:copy="item.src" v-clipboard:success="onCopy">
+                <i class="fa fa-copy"></i>
+              </mu-flat-button>
+              <mu-flat-button label="删除" @click="deleteItem(item,index)">
+                <i class="fa fa-trash-o"></i>
+              </mu-flat-button>
+              <mu-flat-button label="打开" @click="openLink(item.src)">
+                <i class="fa fa-external-link"></i>
+              </mu-flat-button>
+              <mu-flat-button label="选择" @click="selectItem(index)">
+                <i class="fa fa-mouse-pointer"></i>
+              </mu-flat-button>
+            </mu-card-actions>
+          </mu-card>
+        </mu-col>
+      </mu-row>
+    </div>
     <transition name="slide">
       <div class="m-toolbar" v-show="selectList.length">
         <div class="hd">
@@ -55,7 +70,7 @@
 <script>
   import API from "../api/index";
   import storage from "../utils/storage";
-  import Util from "../utils/common"
+  import Util from "../utils/common";
   export default {
     name: "picList",
     data() {
@@ -72,22 +87,67 @@
         isSelectAll: false,
         picList: [
           /* {
-                  hash: "",
-                  key: "a",
-                  src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
-                }*/
-        ]
+                    hash: "",
+                    key: "a",
+                    src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
+                  }*/
+        ],
+        picListCache: [],
+        dateOrder: "1",
+        filterType: "1"
       };
     },
     computed: {
       isPicListChange() {
-        return this.$store.state.isPicListChange
+        return this.$store.state.isPicListChange;
       },
       qiniuAuth() {
-        return this.$store.state.qiniuAuth
+        return this.$store.state.qiniuAuth;
+      },
+      dealPicList() {
+        let result = [];
+        let dateCache = {};
+        this.picList.forEach(item => {
+          const ms = item.putTime * Math.pow(10, -4);
+          const date = Util.getFormatDate(ms);
+          if (!dateCache.date) {
+            result.push({
+              date: date,
+              list: [item]
+            });
+            dateCache.date = {
+              index: result.length - 1
+            };
+          } else {
+            result[dateCache.date.index].list.push(item);
+          }
+        });
+        return result;
+      }
+    },
+    watch: {
+      dateOrder() {
+        this.picList = this.picList.reverse();
+      },
+      filterType(val) {
+        this.filterImage(val)
       }
     },
     methods: {
+      filterImage(val) {
+        const map = {
+          "2": new RegExp(/\.jpg|\.jpeg$/),
+          "3": new RegExp(/\.png$/),
+          "4": new RegExp(/\.gif$/)
+        };
+        this.picList = this.picListCache.filter(item => {
+          if (!map[val]) {
+            return true;
+          } else {
+            return map[val].test(item.key);
+          }
+        });
+      },
       reflowed: function() {
         this.isBusy = false;
       },
@@ -126,6 +186,7 @@
           .then(res => {
             if (res.data.code == 200) {
               this.picList.splice(index, 1);
+              this.picListCache.splice(index, 1);
               this.selectList = [];
               this.$store.commit("SNACK_BAR_CHANGE", {
                 snackbar: true,
@@ -197,6 +258,7 @@
               let index = this.selectList.indexOf(String(i));
               if (index != -1) {
                 this.picList.splice(i, 1);
+                this.picListCache.splice(i, 1);
               }
             }
             this.selectList = [];
@@ -257,6 +319,7 @@
         isSpiner: true
       });
       this.picList = [];
+      this.picListCache = [];
       API.getImageList(this.qiniuAuth)
         .then(res => {
           console.log(res);
@@ -275,9 +338,11 @@
             });
             console.log(data);
             this.picList = data;
+            this.picListCache = data;
             this.$store.commit("PICLIST_CHANGE", {
               isPicListChange: false
             });
+            this.filterImage(this.filterType)
           } else {
             this.$store.commit("SNACK_BAR_CHANGE", {
               snackbar: true,
@@ -336,6 +401,13 @@
         right: 10px;
         top: 10px;
         z-index: 3;
+      }
+    }
+    .date {
+      font-size: 16px;
+      color: #666;
+      .fa {
+        margin-right: 10px;
       }
     }
   }

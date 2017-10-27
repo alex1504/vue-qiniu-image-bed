@@ -40,5 +40,13 @@ export default {
     },
     isSetQiniuAuth() {
         return storage.get("qiniu-settings") != null
+    },
+    getFormatDate(ms){
+        const aDate = new Date(ms);
+        const year = aDate.getFullYear();
+        const month = aDate.getMonth() + 1;
+        const date = aDate.getDate();
+        return `${year}-${month}-${date}`
+
     }
 }
