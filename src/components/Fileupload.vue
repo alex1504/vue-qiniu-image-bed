@@ -222,7 +222,7 @@
           });
           return;
         }
-        if (!this.fetchUrl.match(/\.jpg|\.jpeg|\.png|\.gif]$/)) {
+        if (!this.fetchUrl.match(/\.jpg|\.jpeg|\.png|\.gif$/)) {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
             snackMsg: "只支持图片格式的在线地址"
