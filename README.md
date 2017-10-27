@@ -4,16 +4,15 @@ Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](h
 
 # 项目地址：
 源码地址：https://github.com/alex1504/vue-qiniu-image-bed
-在线地址：http://imgbed.huzerui.com/dist
+在线地址：http://cowbed.huzerui.com
 
 # 功能开发
 - [x] 私人空间、公共空间切换
-- [x] 控件上传及拖拽本地图片上传
+- [x] 控件上传、拖拽本地图片上传、在线图片URL上传
 - [x] 外链复制（markdown）
 - [x] 图片管理、预览、下载、批量删除
 - [ ] 图片分日期管理
 - [ ] 图片重命名
-- [ ] 在线图片URL上传方式
 
 # 技术栈
 前端：
