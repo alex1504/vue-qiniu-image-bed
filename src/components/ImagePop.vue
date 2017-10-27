@@ -11,9 +11,11 @@
           <div class="main">
             <img :src="imgview" :class="{'z-active': isActive}">
             <mu-float-button icon="close" class="btn-confirm" @click="closeImagePop" primary />
-            <mu-float-button :href="imgview" download icon="add" class="btn-download" primary />
+            <mu-float-button :href="imgview" download class="btn-download" primary>
+              <i class="fa fa-download"></i>
+            </mu-float-button>
           </div>
-          <mu-icon value="file-download" :size="32"/>
+          <mu-icon value="file-download" :size="32" />
         </div>
       </div>
     </mu-popup>
@@ -104,8 +106,7 @@
         });
       }
     },
-    mounted() {
-    },
+    mounted() {},
   }
 </script>
 
@@ -118,6 +119,10 @@
     padding: 24px;
   }
   .mu-popup {
+    .fa {
+      font-size: 18px;
+      color: #fff;
+    }
     .imgls {
       margin-top: 10px;
       max-height: 90%;
@@ -184,7 +189,7 @@
       right: 20px;
       top: 20px;
     }
-    .btn-download{
+    .btn-download {
       display: block;
       margin: auto;
       position: absolute;

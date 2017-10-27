@@ -23,10 +23,18 @@
             <mu-text-field :value="item.src" @mouseenter.native="onInputMouseenter" /><br/>
           </mu-card-text>
           <mu-card-actions>
-            <mu-flat-button label="复制" v-clipboard:copy="item.src" v-clipboard:success="onCopy" />
-            <mu-flat-button label="删除" @click="deleteItem(item,index)" />
-            <mu-flat-button label="打开" @click="openLink(item.src)" />
-            <mu-flat-button label="选择" @click="selectItem(index)" />
+            <mu-flat-button label="复制" v-clipboard:copy="item.src" v-clipboard:success="onCopy">
+              <i class="fa fa-copy"></i>
+            </mu-flat-button>
+            <mu-flat-button label="删除" @click="deleteItem(item,index)">
+              <i class="fa fa-trash-o"></i>
+            </mu-flat-button>
+            <mu-flat-button label="打开" @click="openLink(item.src)">
+              <i class="fa fa-external-link"></i>
+            </mu-flat-button>
+            <mu-flat-button label="选择" @click="selectItem(index)">
+              <i class="fa fa-mouse-pointer"></i>
+            </mu-flat-button>
           </mu-card-actions>
         </mu-card>
       </mu-col>
@@ -75,9 +83,9 @@
       isPicListChange() {
         return this.$store.state.isPicListChange
       },
-      qiniuAuth(){
+      qiniuAuth() {
         return this.$store.state.qiniuAuth
-      } 
+      }
     },
     methods: {
       reflowed: function() {
@@ -160,12 +168,6 @@
               )
               .then(res => {
                 if (res.data.code == 200) {
-                  for (let i = this.picList.length - 1; i >= 0; i--) {
-                    if (selectIndex == i) {
-                      this.picList.splice(selectIndex, 1);
-                    }
-                  }
-                  this.selectList = [];
                   this.$store.commit("SNACK_BAR_CHANGE", {
                     snackbar: true,
                     snackMsg: "批量删除成功"
@@ -173,6 +175,7 @@
                   this.$store.commit("PICLIST_CHANGE", {
                     isPicListChange: true
                   });
+                  resolve(res.data);
                 } else {
                   reject(res.data);
                 }
@@ -190,7 +193,13 @@
         });
         Promise.all(deletePromises)
           .then(res => {
-            console.log(11);
+            for (let i = this.picList.length - 1; i >= 0; i--) {
+              let index = this.selectList.indexOf(String(i));
+              if (index != -1) {
+                this.picList.splice(i, 1);
+              }
+            }
+            this.selectList = [];
             console.log(res);
           })
           .catch(err => {
@@ -398,7 +407,7 @@
     top: 0;
     left: 0;
   }
-  .mu-checkbox-icon-checked{
+  .mu-checkbox-icon-checked {
     color: #46529d;
   }
 </style>

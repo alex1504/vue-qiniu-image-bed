@@ -9,7 +9,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 export default {
-  uploadFile(auth, files) {
+  uploadFile(auth, files, uploadOptions) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       Array.prototype.forEach.call(files, (file, index) => {
@@ -17,6 +17,10 @@ export default {
       })
       for (let key in auth) {
         formData.append(key, auth[key])
+      }
+      if(uploadOptions){
+        formData.append('isCustom', "1")
+        formData.append('prefix', uploadOptions.prefix)
       }
       console.log(formData)
       const config = {

@@ -15,7 +15,7 @@
         <input type="file" class="file-button" @change="uploadFile" multiple>
       </mu-flat-button>
       <div class="url-upload">
-        <mu-text-field hintText="上传在线图片例如：http://devtools.qiniu.com/qiniu.png" v-model="fetchUrl">
+        <mu-text-field hintText="在线图片上传：http://devtools.qiniu.com/qiniu.png" v-model="fetchUrl">
         </mu-text-field>
         <mu-raised-button label="上传" class="btn-url-upload" primary @click.native="uploadFetchUrl" />
       </div>
@@ -66,6 +66,9 @@
       },
       tip() {
         return this.isDragOver ? "松开鼠标开始上传" : "拖拽图片到这里上传";
+      },
+      uploadOptions() {
+        return this.$store.state.uploadOptions;
       }
     },
     methods: {
@@ -96,7 +99,7 @@
           return;
         }
         this.isUpload = true;
-        API.uploadFile(this.qiniuAuth, files)
+        API.uploadFile(this.qiniuAuth, files, this.uploadOptions)
           .then(res => {
             console.log(res.data);
             if (res.data instanceof Array && res.data.length) {
@@ -113,6 +116,11 @@
               });
               this.$store.commit("PICLIST_CHANGE", {
                 isPicListChange: true
+              });
+            } else if (res.data.code == 614) {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "文件名重复"
               });
             } else {
               this.$store.commit("SNACK_BAR_CHANGE", {
@@ -137,6 +145,7 @@
         input.select();
       },
       uploadFile(e) {
+        console.log(this.uploadOptions)
         const files = e.target.files;
         if (!files.length) return;
         const isAllImage = Array.prototype.every.call(files, file => {
@@ -150,7 +159,7 @@
           return;
         }
         this.isUpload = true;
-        API.uploadFile(this.qiniuAuth, e.target.files)
+        API.uploadFile(this.qiniuAuth, e.target.files, this.uploadOptions)
           .then(res => {
             console.log(res.data);
             if (res.data instanceof Array && res.data.length) {
@@ -167,6 +176,11 @@
               });
               this.$store.commit("PICLIST_CHANGE", {
                 isPicListChange: true
+              });
+            } else if (res.data.code == 614) {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "文件名重复"
               });
             } else {
               this.$store.commit("SNACK_BAR_CHANGE", {
@@ -232,7 +246,7 @@
                 snackbar: true,
                 snackMsg: "上传成功"
               });
-            }else if(res.data.code == 204) {
+            } else if (res.data.code == 204) {
               this.$store.commit("SNACK_BAR_CHANGE", {
                 snackbar: true,
                 snackMsg: "请检查七牛配置是否正确"
@@ -311,9 +325,6 @@
   }
   .file-wrap {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     text-align: center;
     .file-button {
       position: absolute;
@@ -324,7 +335,6 @@
       opacity: 0;
     }
     .btn-select {
-      flex-basis: 400px;
       margin: 20px 0;
       input {
         width: 100%;

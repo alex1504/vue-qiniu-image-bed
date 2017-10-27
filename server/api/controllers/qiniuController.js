@@ -65,12 +65,24 @@ function uploadFile(req, res) {
   form.parse(req, function (err, fields, files) {
     for (var fileKey in files) {
       const file = files[fileKey];
+      const fileName = file.name;
+      const isCustom = fields.isCustom;
+      const prefix = fields.prefix || '';
       const localFile = file.path;
       const config = new qiniu.conf.Config();
       const formUploader = new qiniu.form_up.FormUploader(config);
       const putExtra = new qiniu.form_up.PutExtra();
-      const key = renderUniFileName(file.type);
+      let key = '';
       const uploadToken = renderUploadToken(fields);
+      
+      if (isCustom == '1') {
+        // 用户自定义前缀
+        key = prefix + fileName;
+      } else {
+        // 默认前缀
+        key = renderUniFileName(file.type);
+      }
+
       const uploadPromise = new Promise((resolve, reject) => {
         // 文件上传
         formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr,
@@ -79,6 +91,7 @@ function uploadFile(req, res) {
             reject(respErr);
             return;
           }
+          console.log(respBody)
           if (respInfo.statusCode == 200) {
             resolve({
               hash: respInfo.data.hash,
@@ -88,7 +101,6 @@ function uploadFile(req, res) {
           } else {
             reject(respBody)
             console.log(respInfo.statusCode);
-            console.log(respBody);
           }
         });
 
@@ -97,12 +109,13 @@ function uploadFile(req, res) {
     }
     Promise.all(uploadPromises)
       .then(resp => {
-        console.log(resp)
         res.json(resp)
       })
       .catch(err => {
-        res.json(err)
-        console.log(err)
+        res.json({
+          code: 614,
+          msg: err.error
+        })
       })
 
   });
@@ -178,7 +191,7 @@ function getImageList(req, res) {
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Authorization', accessToken)
     .end((err, resp) => {
-      if(err) {
+      if (err) {
         console.log(err);
         res.json({
           code: 204,
@@ -251,7 +264,7 @@ function fetchAndUpload(req, res) {
   const resUrl = req.body.fetchUrl || '';
   const matchType = resUrl.match(/\.jpg|\.jpeg|\.png|\.gif]$/)
 
-  if(!resUrl){
+  if (!resUrl) {
     res.json({
       code: 400,
       msg: '参数fetchUrl不能为空'
@@ -259,7 +272,7 @@ function fetchAndUpload(req, res) {
     return;
   }
 
-  if(!matchType){
+  if (!matchType) {
     res.json({
       code: 415,
       msg: '只支持图片链接'
@@ -270,8 +283,8 @@ function fetchAndUpload(req, res) {
   const config = new qiniu.conf.Config();
   const bucketManager = new qiniu.rs.BucketManager(mac, config);
   const key = renderUniFileName(matchType[0]);
-  
-  bucketManager.fetch(resUrl, bucket, key, function(err, respBody, respInfo) {
+
+  bucketManager.fetch(resUrl, bucket, key, function (err, respBody, respInfo) {
     if (err) {
       console.log(err);
       res.json({

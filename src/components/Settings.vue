@@ -3,6 +3,7 @@
     <mu-tabs :value="activeTab" @change="handleTabChange">
       <mu-tab value="tab1" title="私人空间" />
       <mu-tab value="tab2" title="公共空间" />
+      <mu-tab value="tab3" title="上传设置" />
     </mu-tabs>
     <div v-if="activeTab === 'tab1'">
       <settings-self>
@@ -13,6 +14,9 @@
       <settings-public>
         <mu-raised-button slot="btn" label="切换当前空间" class="demo-raised-button" secondary @click="openBottomSheet" />
       </settings-public>
+    </div>
+    <div v-if="activeTab === 'tab3'">
+      <SettingsUpload></SettingsUpload>
     </div>
     <!-- bottom sheet -->
     <mu-bottom-sheet :open="bottomSheet" @close="closeBottomSheet">
@@ -32,11 +36,13 @@
   import Util from "../utils/common";
   import SettingsSelf from "./SettingsSelf.vue";
   import SettingsPublic from "./SettingsPublic.vue";
+  import SettingsUpload from "./SettingsUpload.vue"
   export default {
     name: "settings",
     components: {
       SettingsSelf,
-      SettingsPublic
+      SettingsPublic,
+      SettingsUpload
     },
     data() {
       return {
@@ -46,10 +52,27 @@
         qiniuActive: storage.get("qiniu-active") || -1
       };
     },
-    computed: {},
+    computed: {
+      uploadOptions() {
+        return this.$store.state.uploadOptions
+      }
+    },
     methods: {
       handleTabChange(val) {
         this.activeTab = val;
+        if (val == 'tab3') {
+          const tip = this.uploadOptions ? "当前上传方式为自定义前缀" : "当前上传方式为默认前缀"
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: tip
+          });
+        } else {
+          const zoneName = storage.get("qiniu-active") == 1 ? "私人空间" : "公共空间";
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: `你当前所在的空间为${zoneName}`
+          });
+        }
       },
       handleActive() {
         window.alert("tab active");
@@ -77,11 +100,19 @@
       }
     },
     activated() {
-      const zoneName = storage.get("qiniu-active") == 1 ? "私人空间" : "公共空间";
-      this.$store.commit("SNACK_BAR_CHANGE", {
-        snackbar: true,
-        snackMsg: `你当前所在的空间为${zoneName}`
-      });
+      if (this.activeTab == 'tab3') {
+        const tip = this.uploadOptions ? "当前上传方式为自定义前缀" : "当前上传方式为默认前缀"
+        this.$store.commit("SNACK_BAR_CHANGE", {
+          snackbar: true,
+          snackMsg: tip
+        });
+      } else {
+        const zoneName = storage.get("qiniu-active") == 1 ? "私人空间" : "公共空间";
+        this.$store.commit("SNACK_BAR_CHANGE", {
+          snackbar: true,
+          snackMsg: `你当前所在的空间为${zoneName}`
+        });
+      }
     }
   };
 </script>
@@ -94,10 +125,10 @@
   .mu-text-field {
     width: 100%;
   }
-  .mu-tabs{
-    background-color:#46529d;
+  .mu-tabs {
+    background-color: #46529d;
   }
-  .mu-tab-link-highlight{
+  .mu-tab-link-highlight {
     background-color: #ff4081;
   }
 </style>

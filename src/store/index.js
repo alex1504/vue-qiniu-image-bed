@@ -33,7 +33,9 @@ const store = new Vuex.Store({
         // 七牛图片list数量是否变化
         isPicListChange: true,
         // 七牛API授权
-        qiniuAuth: Util.getQiniuAuth()
+        qiniuAuth: Util.getQiniuAuth(),
+        // 上传文件名前缀
+        uploadOptions: storage.get("uploadOptions") || null
 
     },
     getters: {
@@ -86,6 +88,9 @@ const store = new Vuex.Store({
         },
         QINIU_AUTH_CHANGE: function(state, payload) {
             state.qiniuAuth = payload.qiniuAuth;
+        },
+        UPLOAD_OPTIONS_CHANGE: function(state, payload) {
+            state.uploadOptions = payload.uploadOptions;
         },
     }
 })
