@@ -1,12 +1,13 @@
-# 牛牛图床
-Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)），前后端分离。后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发，服务原本部署在Heroku，由于服务响应速度慢的原因，已将服务部署在朋友的华为云服务器上。
+# CN
+## 牛牛图床
+Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)，前后端分离。后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发，服务原本部署在Heroku，由于服务响应速度慢的原因，已将服务部署在朋友的华为云服务器上。
 ![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
 
-# 项目地址：
+## 项目地址：
 源码地址：https://github.com/alex1504/vue-qiniu-image-bed
 在线地址：http://cowbed.huzerui.com
 
-# 功能开发
+## 功能开发
 - [x] 私人空间、公共空间切换
 - [x] 控件上传、拖拽本地图片上传、在线图片URL上传
 - [x] 外链复制（markdown）
@@ -16,7 +17,7 @@ Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](h
 - [ ] 图片重命名
 - [ ] 音频、视频资源管理
 
-# 技术栈
+## 技术栈
 前端：
 - Vue2：Vue2.0渐进式MVVM框架
 - Vuex：实现不同组件之间的状态共享
@@ -36,7 +37,7 @@ Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](h
 主要语法：
 - 前端ES6，后端ES5（部分开发时间是在公司，由于某些原因无法使用高版本node）
 
-# 本地预览
+## 本地预览
 ```javascript
 git clone https://github.com/alex1504/vue-qiniu-image-bed.git
 cd https://github.com/alex1504/vue-qiniu-image-bed.git
@@ -51,10 +52,68 @@ npm run dev
 npm run server
 ```
 
-# 其他
+## 其他
 1. 项目前端使用**localStorage**保存七牛授权数据
 2. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
 3. 若有任何问题、反馈或者建议，请提交issue中。
 4. 欢迎**fork及star**，你的支持是我前进的动力。
 
+# EN
+## Cow-Bed
+A single page application for Qiniu image management which using Vue-cli(base on [museui](http://www.muse-ui.org)), front-end and back-end seperation. The back-end is based on express and Qiniu [nodejs-SDK](https://github.com/qiniu/nodejs-sdk), it deployed and served originally on Heroku, but dure to slow service response, the service has been deployed on the friend's HUAWEI cloud server.
+![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
 
+## Project Address:
+Source address: https://github.com/alex1504/vue-qiniu-image-bed
+Online address：http://cowbed.huzerui.com
+
+## Function Development
+- [x] Private space and public space switching
+- [x] Upload with input element, drag file to upload, upload online pictures URL
+- [x] Outer chain replication (markdown)
+- [x] Picture management, preview, download, batch delete
+- [x] Picture square, share pictures to the square
+- [ ] Picture management by date
+- [ ] Picture rename
+- [ ] Audio and video resource management
+
+## Technology Stack
+Front-end：
+- Vue2：Vue2.0 progressive MVVM framework
+- Vuex：Sharing state between different components
+- Vue-router：Single page application routing management plug-in
+- Axios：Http request tool
+- SASS(SCSS)：CSS preprocessing language
+- Webpack：Automated building tools
+- Localstorage：Local storage
+
+Backend：
+- Express：A concise and flexible framework for node.js Web applications
+- cors(Middleware)：Cross domain resource sharing
+- body-parse(Middleware)：Parsing the request body
+- formidable(Middleware)：Node.js module for parsing form data (form-data)
+- nodemon：Monitor modify auto restart node service plug-in
+
+Main grammar：
+- Front end ES6, back-end ES5 (part of the development time is in the company, for some reason can not use the high version of node)
+
+## Local Preview
+```javascript
+git clone https://github.com/alex1504/vue-qiniu-image-bed.git
+cd https://github.com/alex1504/vue-qiniu-image-bed.git
+// Installation front-end dependency
+npm install
+cd server
+// Installation backend dependency
+npm install
+cd ../
+npm run dev
+// Open another git process
+npm run server
+```
+
+## Others
+1. Using **localStorage** to save seven cattle authorization data.
+2. Some resource libraries are introduced by CDN, which is provided by [**bootCDN**] (http://www.bootcdn.cn/).
+3. If you have any questions, feedbacks or suggestions, please submit them to issue.
+4. Welcome to **fork and star**, your support is the driving force for me to move forward.
