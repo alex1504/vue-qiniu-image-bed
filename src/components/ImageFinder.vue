@@ -46,7 +46,7 @@
         data() {
             return {
                 searchTxt: "",
-                imgList: [],
+                imgList: [{}],
                 searchList: [],
                 isSearching: false,
                 isLoading: true,

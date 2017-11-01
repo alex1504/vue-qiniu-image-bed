@@ -30,14 +30,14 @@
                     qiniuAuth: qiniuAuth
                 });
                 this.$router.push({
-                    name: 'Ground'
+                    name: 'ImageFinder'
                 })
             }
         },
         mounted() {
             if(Util.isSetQiniuAuth()){
                 this.$router.push({
-                    name: 'Ground'
+                    name: 'ImageFinder'
                 })
                 return;
             }
