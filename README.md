@@ -52,7 +52,7 @@ npm run server
 ```
 
 # 其他
-1. 项目前端使用**localStorage**保存你的七牛授权钥匙，并不会保存你的授权数据到数据库。
+1. 项目前端使用**localStorage**保存七牛授权数据
 2. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
 3. 若有任何问题、反馈或者建议，请提交issue中。
 4. 欢迎**fork及star**，你的支持是我前进的动力。
