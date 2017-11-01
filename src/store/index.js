@@ -42,12 +42,13 @@ const store = new Vuex.Store({
         // 当前所属菜单
         activeMenu(state) {
             var mapIndex = {
-                "Ground": '1',
-                "ImageList": '2',
-                "Settings": '3',
-                'Chatroom': '4',
-                'NewPost': '5',
-                "Me": '6',
+                "ImageFinder": '1',
+                "Ground": '2',
+                "ImageList": '3',
+                "Settings": '4',
+                'Chatroom': '5',
+                'NewPost': '6',
+                "Me": '7',
             }
             return mapIndex[state.activeRoute]
         }

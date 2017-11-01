@@ -15,7 +15,7 @@
         <input type="file" class="file-button" @change="uploadFile" multiple>
       </mu-flat-button>
       <div class="url-upload">
-        <mu-text-field hintText="在线图片上传：http://devtools.qiniu.com/qiniu.png" v-model="fetchUrl">
+        <mu-text-field hintText="通过图片URL上传：http://devtools.qiniu.com/qiniu.png" v-model="fetchUrl">
         </mu-text-field>
         <mu-raised-button label="上传" class="btn-url-upload" primary @click.native="uploadFetchUrl" />
       </div>
@@ -225,7 +225,7 @@
         if (!this.fetchUrl.match(/\.jpg|\.jpeg|\.png|\.gif$/)) {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
-            snackMsg: "只支持图片格式的在线地址"
+            snackMsg: "只支持图片上传"
           });
           return;
         }
@@ -348,6 +348,7 @@
       .mu-text-field {
         top: 8px;
         flex: 1;
+        text-align: left;
       }
     }
   }

@@ -6,7 +6,7 @@
           <div class="image" :style="'background-image:url('+item.src+')'" @click="showImageView(item.src)"></div>
         </mu-col>
       </mu-row>
-      <div class="imgview">
+      <div class="imgview" v-if="!isForm">
         <div class="wrap">
           <div class="main">
             <img :src="imgview" :class="{'z-active': isActive}">
@@ -14,8 +14,24 @@
             <mu-float-button :href="imgview" download class="btn-download" primary>
               <i class="fa fa-download"></i>
             </mu-float-button>
+            <mu-float-button icon="share" class="btn-share" primary @click.stop.prevent="showForm" />
           </div>
-          <mu-icon value="file-download" :size="32" />
+        </div>
+      </div>
+      <div class="imgview" v-if="isForm">
+        <div>
+          <h1>分享成功后，图片会在广场中被检索到</h1>
+          <mu-text-field hintText="标题" v-model="title" /><br/>
+          <mu-text-field hintText="关键词：支持多个，逗号分隔" v-model="keywordBind" /><br/>
+          <mu-select-field v-model="imageTypeBind" multiple label="图片类别">
+            <mu-menu-item v-for="(item,index) in typeList" :key="index" :value="index" :title="item" />
+          </mu-select-field>
+          <div>
+            <mu-raised-button label="分享" primary @click="shareImage" />
+          </div>
+          <mu-float-button :href="imgview" class="btn-back" primary @click.stop.prevent="hideForm">
+            <i class="fa fa-arrow-left"></i>
+          </mu-float-button>
         </div>
       </div>
     </mu-popup>
@@ -30,7 +46,13 @@
     data() {
       return {
         picList: [],
-        isActive: false
+        isActive: false,
+        typeList: ['生活','家居','自然','城市','旅游','食物','用品','科技','交通','素材','金融','商务','概念','动物'],
+        /* --- 分享表单 --- */
+        isForm: false,
+        keywordBind: '',
+        title: '',
+        imageTypeBind: [],
       }
     },
     watch: {
@@ -43,6 +65,8 @@
       isImagePop(isImagePop) {
         if (isImagePop) {
           this.getImageList()
+        }else{
+          this.isForm = false
         }
       }
     },
@@ -55,6 +79,15 @@
       },
       qiniuAuth() {
         return this.$store.state.qiniuAuth
+      },
+      /* --- 分享表单 --- */
+      keyword(){
+        return this.keywordBind.replace('，',',').split(',')
+      },
+      imageType(){
+        return this.imageTypeBind.map((value)=>{
+          return this.typeList[value]
+        })
       }
     },
     methods: {
@@ -104,9 +137,44 @@
             snackMsg: "获取资源失败"
           });
         });
+      },
+      shareImage(){
+        console.log(this.imageType)
+        
+        if(!this.title || !this.keyword || !this.imageType.length){
+           this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "存在字段为空"
+          });
+          return;
+        }
+        API.shareImage({
+          title: this.title,
+          keyword: this.keyword,
+          type: this.imageType,
+          source: this.imgview
+        }).then(res=>{
+          console.log(res)
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "分享成功"
+          });
+        }).catch(err=>{
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "分享失败"
+          });
+        })
+      },
+      showForm(){
+        this.isForm = true;
+      },
+      hideForm(){
+        this.isForm = false;
       }
     },
-    mounted() {},
+    mounted() {
+    },
   }
 </script>
 
@@ -181,8 +249,11 @@
           animation: fadeIn .3s linear;
         }
       }
+      .mu-text-field{
+        width: 100%;
+      }
     }
-    .btn-confirm {
+    .btn-confirm,.btn-back {
       display: block;
       margin: auto;
       position: absolute;
@@ -195,6 +266,13 @@
       position: absolute;
       right: 20px;
       top: 100px;
+    }
+    .btn-share {
+      display: block;
+      margin: auto;
+      position: absolute;
+      right: 20px;
+      top: 180px;
     }
   }
 </style>

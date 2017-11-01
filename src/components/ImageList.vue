@@ -87,10 +87,10 @@
         isSelectAll: false,
         picList: [
           /* {
-                    hash: "",
-                    key: "a",
-                    src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
-                  }*/
+            hash: "",
+            key: "a",
+            src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
+          }*/
         ],
         picListCache: [],
         dateOrder: "1",
@@ -110,20 +110,21 @@
         this.picList.forEach(item => {
           const ms = item.putTime * Math.pow(10, -4);
           const date = Util.getFormatDate(ms);
-          if (!dateCache.date) {
+          console.log(date);
+          if (!dateCache[date]) {
             result.push({
               date: date,
               list: [item]
             });
-            dateCache.date = {
+            dateCache[date] = {
               index: result.length - 1
             };
           } else {
-            result[dateCache.date.index].list.push(item);
+            result[dateCache[date].index].list.push(item);
           }
         });
         return result;
-      }
+      },
     },
     watch: {
       dateOrder() {
@@ -176,7 +177,13 @@
         this.selectList = [];
       },
       deleteItem(item, index) {
-        console.log(item.key);
+        if (storage.get("qiniu-active") == 2) {
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "当前为公共空间，不允许删除图片"
+          });
+          return;
+        }
         this.isDelete = true;
         API.deleteImage(
             Object.assign(this.qiniuAuth, {
@@ -218,6 +225,13 @@
           });
       },
       deleteSelectItems() {
+        if (storage.get("qiniu-active") == 2) {
+          this.$store.commit("SNACK_BAR_CHANGE", {
+            snackbar: true,
+            snackMsg: "当前为公共空间，不允许删除图片"
+          });
+          return;
+        }
         this.isDelete = true;
         const deletePromises = this.selectList.map(selectIndex => {
           selectIndex = parseInt(selectIndex);

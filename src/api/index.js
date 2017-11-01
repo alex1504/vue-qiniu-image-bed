@@ -18,7 +18,7 @@ export default {
       for (let key in auth) {
         formData.append(key, auth[key])
       }
-      if(uploadOptions){
+      if (uploadOptions) {
         formData.append('isCustom', "1")
         formData.append('prefix', uploadOptions.prefix)
       }
@@ -43,8 +43,8 @@ export default {
         bucket: obj.bucket,
         fetchUrl: obj.fetchUrl
       }
-      if(obj.uploadOptions){
-        postData.isCustom= "1"
+      if (obj.uploadOptions) {
+        postData.isCustom = "1"
         postData.prefix = obj.uploadOptions.prefix
       }
       axios.post("/upload/fetch", postData).then(res => {
@@ -80,6 +80,80 @@ export default {
         reject(err)
       });
     })
+  },
+  shareImage(info) {
+    return new Promise((resolve, reject) => {
+      var Image = AV.Object.extend('Image');
+      var image = new Image();
+      image.set('title', info.title);
+      image.set('keyword', info.keyword);
+      image.set('type', info.type);
+      image.set('source', info.source);
+      image.save().then(function (image) {
+        resolve(image)
+        console.log('New object created with objectId: ' + image.id);
+      }, function (error) {
+        reject(error)
+        // 异常处理
+        console.error('Failed to create new object, with error message: ' + error.message);
+      });
+    })
+  },
+  searchImage(word) {
+    return new Promise((resolve, reject) => {
+      const titleQuery = new AV.Query('Image');
+      titleQuery.contains('title', word);
+
+      const keywordQuery = new AV.Query('Image');
+      keywordQuery.equalTo('keyword', word);
+
+      const typeQuery = new AV.Query('Image');
+      typeQuery.equalTo('type', word);
+
+      const query = AV.Query.or(titleQuery, keywordQuery, typeQuery);
+
+      query.find().then(function (res) {
+        res = res.map(obj => {
+          return obj.attributes
+        })
+        resolve(res)
+      }, function (error) {
+        console.log(error)
+        reject(error)
+      });
+    })
+  },
+  getShareImage() {
+    return new Promise((resolve, reject) => {
+      const query = new AV.Query('Image');
+      query.find().then(function (res) {
+        res = res.map(obj => {
+          return {
+            ...obj.attributes,
+            id: obj.id,
+            createdAt: new Date(obj.createdAt).getTime()
+          }
+        })
+        resolve(res)
+      }, function (error) {
+        console.log(error)
+        reject(error)
+      });
+
+    })
+  },
+  updateImageCount(id) {
+    return new Promise((resolve, reject) => {
+      var image = AV.Object.createWithoutData('Image', '59f93b5e570c35005d2320d7');
+      image.save().then(function (image) {
+        image.increment('count', 1);
+        image.save().then(function (res) {
+          resolve(res)
+        }, function (error) {
+          reject(error)
+        });
+      })
+    });
   }
-  
+
 }
