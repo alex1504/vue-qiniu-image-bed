@@ -144,7 +144,7 @@ export default {
   },
   updateImageCount(id) {
     return new Promise((resolve, reject) => {
-      var image = AV.Object.createWithoutData('Image', '59f93b5e570c35005d2320d7');
+      var image = AV.Object.createWithoutData('Image', id);
       image.save().then(function (image) {
         image.increment('count', 1);
         image.save().then(function (res) {
