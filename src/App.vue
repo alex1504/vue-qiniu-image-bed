@@ -1,7 +1,7 @@
 <template>
     <div id="app" v-cloak>
           <router-view></router-view>
-          <footer>Hosted by Coding Pages</footer>
+          <footer>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></footer>
     </div>
 </template>
 
@@ -100,6 +100,9 @@ footer{
   left: 50%;
   transform: translateX(-50%);
   color: #bac3f3;
+  a{
+    color: inherit;
+  }
 }
 img {
   max-width: 100%;
