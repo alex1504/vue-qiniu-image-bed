@@ -1,6 +1,7 @@
 <template>
     <div id="app" v-cloak>
           <router-view></router-view>
+          <footer>Hosted by Coding Pages</footer>
     </div>
 </template>
 
@@ -89,7 +90,17 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
     "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
 }
-
+#app {
+  width: 100%;
+  height: 100%;
+}
+footer{
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #bac3f3;
+}
 img {
   max-width: 100%;
 }
@@ -98,8 +109,5 @@ a {
   cursor: pointer;
 }
 
-#app {
-  width: 100%;
-  height: 100%;
-}
+
 </style>
