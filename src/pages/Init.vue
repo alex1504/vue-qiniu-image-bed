@@ -3,7 +3,8 @@
     <div id="particles-js"></div>
     <div class="main">
       <h2 class="title">牛牛图床</h2>
-      <router-view></router-view>
+      <Config></Config>
+      <!-- <router-view></router-view> -->
       <Snackbar></Snackbar>
     </div>
   </div>

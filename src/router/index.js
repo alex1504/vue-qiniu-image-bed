@@ -22,9 +22,6 @@ export default new Router({
         path: '/',
         name: 'Init',
         component: Init,
-        redirect: {
-            name: 'Config'
-        },
         children: [{
             name: 'Config',
             path: 'config',
