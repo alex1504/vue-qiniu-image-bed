@@ -1,6 +1,6 @@
 # CN
 ## 牛牛图床
-Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)，前后端分离。后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发，服务原本部署在Heroku，由于服务响应速度慢的原因，已将服务部署在朋友的华为云服务器上。
+Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)，前后端分离。后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发，服务原本部署在Heroku，由于服务响应速度慢的原因，已将后端服务部署在华为云服务器上。
 ![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
 
 ## 项目地址：
@@ -57,7 +57,11 @@ npm run server
 2. 项目前端使用**localStorage**保存七牛授权数据
 3. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
 4. 若有任何问题、反馈或者建议，请提交issue中。
-5. 欢迎**fork及star**，你的支持是我前进的动力。
+
+## 捐赠
+若项目对您有所帮助，别忘了star支持一下，或者使用支付宝或微信捐赠打赏，您的支持是我前进的动力。
+![support](http://qiniu1.huzerui.com/17-11-5/43855555.jpg)
+
 
 # EN
 ## Cow-Bed
