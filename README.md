@@ -57,11 +57,7 @@ npm run server
 2. 项目前端使用**localStorage**保存七牛授权数据
 3. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
 4. 若有任何问题、反馈或者建议，请提交issue中。
-
-## 捐赠
-若项目对您有所帮助，别忘了star支持一下，或者使用支付宝或微信捐赠打赏，您的支持是我前进的动力。
-![support](http://qiniu1.huzerui.com/17-11-5/43855555.jpg)
-
+5. 若项目对你有所帮助，别忘了**star**一下。
 
 # EN
 ## Cow-Bed
