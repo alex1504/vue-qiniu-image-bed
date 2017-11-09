@@ -1,14 +1,9 @@
-var app = require('express')()
-var server = require('http').createServer(app)
-var cors = require('cors')
-// var io = require('socket.io').listen(server);
-
-/* var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000
-var ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0' */
-var port = process.env.PORT || 3000
-
-
-var bodyParser = require('body-parser')
+const app = require('express')()
+const server = require('http').createServer(app)
+const cors = require('cors')
+// const io = require('socket.io').listen(server);
+const port = process.env.PORT || 3000
+const bodyParser = require('body-parser')
 
 
 // 应用层中间件
@@ -33,11 +28,11 @@ app.route('/')
     })
   });
 
-var qiniuRoute = require('./api/routes/qiniuRoute')
+const qiniuRoute = require('./api/routes/qiniuRoute')
 qiniuRoute(app)
 
 /* 
-var users = [];
+const users = [];
 io.sockets.on('connection', function (socket) {
   socket.emit('a', {
     hello: 'world'
@@ -45,8 +40,8 @@ io.sockets.on('connection', function (socket) {
 
 
   socket.on('online', function (data) {
-    var username = data.username;
-    var avatar = data.avatar;
+    const username = data.username;
+    const avatar = data.avatar;
     socket.name = username;
     if (users.indexOf(username) == -1) {
       users.push(username)
@@ -59,8 +54,8 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('message', function (data) {
-    var say = data.say;
-    var avatar = data.avatar;
+    const say = data.say;
+    const avatar = data.avatar;
     socket.name = say;
     io.sockets.emit('message', {
       message: say,
@@ -69,8 +64,6 @@ io.sockets.on('connection', function (socket) {
   });
 }); */
 
-server.listen(port);
+app.listen(port);
 console.log(`Server running on port ${port}`); 
 
-/* server.listen(port,ip);
-console.log('Server running on http://%s:%s', ip, port); */
