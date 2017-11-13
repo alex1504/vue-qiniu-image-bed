@@ -7,7 +7,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         // 当前路由名称
-        activeRoute: '',
+        activeRoute: 'ImageFinder',
         // Emoji折叠展开状态
         isEmoji: false,
         // snackbar 状态
@@ -43,7 +43,7 @@ const store = new Vuex.Store({
         activeMenu(state) {
             var mapIndex = {
                 "ImageFinder": '1',
-                "Ground": '2',
+                "Upload": '2',
                 "ImageList": '3',
                 "Settings": '4',
                 'Chatroom': '5',

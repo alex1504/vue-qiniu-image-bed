@@ -1,16 +1,16 @@
 <template>
-    <!--Start Ground-->
-    <div class="ground-container" ref="box">
+    <!--Start Upload-->
+    <div class="upload-container" ref="box">
         <Fileupload></Fileupload>
     </div>
-    <!--END Ground-->
+    <!--END Upload-->
 </template>
 
 <script>
     import axios from 'axios'
     import Fileupload from './Fileupload'
     export default {
-        name: 'ground',
+        name: 'upload',
         components: {
             Fileupload
         },
@@ -30,13 +30,13 @@
 </script>
 
 <style scoped lang="scss">
-    .ground-container {
+    .upload-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
         height: 100%;
     }
-    .ground {
+    .upload {
         width: 80%;
         height: 90%;
     }

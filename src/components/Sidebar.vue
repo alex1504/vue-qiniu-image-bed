@@ -26,7 +26,7 @@
         open: false,
         mapRoute: {
           "1": "ImageFinder",
-          "2": "Ground",
+          "2": "Upload",
           "3": "ImageList",
           "4": "Settings",
           "5": "Chatroom",

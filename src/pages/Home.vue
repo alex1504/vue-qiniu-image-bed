@@ -25,7 +25,7 @@
 <script>
   import axios from "axios";
   import Sidebar from "../components/Sidebar.vue";
-  import Ground from "../components/Ground.vue";
+  import Upload from "../components/Upload.vue";
   import Chatroom from "../components/Chatroom.vue";
   import PostForm from "../components/PostForm.vue";
   import ImageList from "../components/ImageList.vue";
@@ -46,7 +46,7 @@
     },
     components: {
       Sidebar,
-      Ground,
+      Upload,
       PostForm,
       ImageList,
       Settings,

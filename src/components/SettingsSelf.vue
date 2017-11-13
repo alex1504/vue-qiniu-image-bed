@@ -14,7 +14,7 @@
 
 <script>
     import storage from "../utils/storage";
-    import Util from "../utils/common"
+    import Util from "../utils/common";
     export default {
         name: "settings",
         data() {
@@ -52,7 +52,7 @@
                     secretKey: this.secretKey,
                     bucket: this.bucket,
                     domain: this.domain
-                }
+                };
                 storage.set("qiniu-settings", qiniuAuth);
                 this.$store.commit("QINIU_AUTH_CHANGE", {
                     qiniuAuth: qiniuAuth
@@ -62,13 +62,16 @@
                     snackMsg: "保存设置成功"
                 });
                 this.$store.commit("PICLIST_CHANGE", {
-                    isPicListChange: true,
+                    isPicListChange: true
                 });
-                if (this.$route.name == 'Config') {
+                if (this.$route.name == "Init") {
                     this.$router.push({
-                        name: 'Ground'
-                    })
-                    storage.set("qiniu-active", 1)
+                        name: "Upload"
+                    });
+                    this.$store.commit("ACTIVE_ROUTE_CHANGE", {
+                        activeRoute: "Upload"
+                    });
+                    storage.set("qiniu-active", 1);
                 }
             }
         }

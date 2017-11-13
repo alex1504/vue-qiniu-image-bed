@@ -30,14 +30,17 @@
                     qiniuAuth: qiniuAuth
                 });
                 this.$router.push({
-                    name: 'ImageFinder'
+                    name: 'Upload'
                 })
+                this.$store.commit("ACTIVE_ROUTE_CHANGE", {
+                    activeRoute: "Upload"
+                });
             }
         },
         mounted() {
             if(Util.isSetQiniuAuth()){
                 this.$router.push({
-                    name: 'ImageFinder'
+                    name: 'Upload'
                 })
                 return;
             }

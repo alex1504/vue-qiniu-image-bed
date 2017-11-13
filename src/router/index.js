@@ -6,7 +6,7 @@ import Config from '@/components/Config'
 import RegistForm from '@/components/RegistForm'
 import RegistUserInfoForm from '@/components/RegistUserInfoForm'
 import ImageFinder from '@/components/ImageFinder'
-import Ground from '@/components/Ground'
+import Upload from '@/components/Upload'
 import Chatroom from '@/components/Chatroom'
 import NewPost from '@/components/PostForm'
 import PostDetail from '@/components/PostDetail'
@@ -40,16 +40,16 @@ export default new Router({
         name: 'Home',
         component: Home,
         redirect: {
-            name: 'Ground'
+            name: 'Upload'
         },
         children: [{
             name: 'ImageFinder',
             path: 'imageFinder',
             component: ImageFinder
         },{
-            name: 'Ground',
-            path: 'ground',
-            component: Ground
+            name: 'Upload',
+            path: 'upload',
+            component: Upload
         }, {
             name: 'Chatroom',
             path: 'chatroom',
@@ -79,7 +79,7 @@ export default new Router({
         path: '*',
         name: 'root',
         redirect: {
-            name: 'Ground'
+            name: 'Upload'
         }
     }]
 })
