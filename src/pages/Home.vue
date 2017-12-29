@@ -37,7 +37,8 @@
   export default {
     name: "home",
     data() {
-      return {};
+      return {
+      };
     },
     computed: {
       isLoading() {
@@ -56,7 +57,9 @@
       ImagePop,
       Backtop
     },
-    methods: {},
+    methods: {
+     
+    },
     mounted() {
     }
   };

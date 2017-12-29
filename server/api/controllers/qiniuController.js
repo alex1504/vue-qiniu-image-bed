@@ -236,9 +236,11 @@ function getImageInfo(req, res) {
  * @param bucket：: {{string}}
  */
 function getImageList(req, res) {
-  const accessKey = req.body.accessKey || '';
-  const secretKey = req.body.secretKey || '';
-  const bucket = req.body.bucket || '';
+  const accessKey = req.body.accessKey || ''
+  const secretKey = req.body.secretKey || ''
+  const bucket = req.body.bucket || ''
+  const marker = req.body.marker || ''
+  const limit = req.body.limit || 20
 
   console.log(accessKey)
   var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -246,9 +248,9 @@ function getImageList(req, res) {
   if (!Object.keys(req.body).length) {
     req.body = "";
   }
-  const accessToken = qiniuUtil.generateAccessToken(mac, "http://rsf.qbox.me/list?bucket=" + bucket)
+  const accessToken = qiniuUtil.generateAccessToken(mac, "http://rsf.qbox.me/list?bucket=" + bucket + '&limit=' + limit + '&marker=' + marker)
   request
-    .post('http://rsf.qbox.me/list?bucket=' + bucket)
+    .post('http://rsf.qbox.me/list?bucket=' + bucket + '&limit=' + limit + '&marker=' + marker)
     .timeout(10000)
     .set('Host', 'rsf.qbox.me')
     .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -265,9 +267,12 @@ function getImageList(req, res) {
       if (resp.status == 200) {
         let data = resp.text.replace(/\\/, "");
         data = JSON.parse(data)
+        data.items.sort((obj1, obj2) => {
+          return obj2.putTime - obj1.putTime;
+        });
         res.json({
           code: 200,
-          data: data.items
+          data: data
         })
       } else {
         res.json({

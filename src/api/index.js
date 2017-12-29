@@ -5,7 +5,7 @@ if (process.env.NODE_ENV == 'development') {
   axios.defaults.baseURL = '/api';
   // axios.defaults.baseURL = 'http://127.0.0.1:3000';
 } else {
-  axios.defaults.baseURL = 'http://139.159.235.194:3000';
+  axios.defaults.baseURL = 'http://114.67.72.148:3000';
 }
 
 export default {
@@ -54,12 +54,14 @@ export default {
       });
     })
   },
-  getImageList(auth) {
+  getImageList(auth, marker, limit) {
     return new Promise((resolve, reject) => {
       axios.post("/imageList", {
         accessKey: auth.accessKey,
         secretKey: auth.secretKey,
         bucket: auth.bucket,
+        marker: marker,
+        limit: limit
       }).then(res => {
         resolve(res)
       }).catch(err => {

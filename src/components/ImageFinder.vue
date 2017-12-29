@@ -51,7 +51,7 @@
                 isSearching: false,
                 isLoading: true,
                 select: 0,
-                filterList: ['所有','最热', '最新']
+                filterList: ['所有','最热', '最新'],
             };
         },
         computed: {

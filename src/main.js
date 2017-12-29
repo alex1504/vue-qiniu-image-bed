@@ -8,12 +8,13 @@ import 'muse-ui/dist/muse-ui.css'
 import store from './store/index.js'
 import database from './database/index'
 import VueClipboard from 'vue-clipboard2'
-
+import infiniteScroll from 'vue-infinite-scroll'
 
 database.init()
 
 Vue.use(MuseUI)
 Vue.use(VueClipboard)
+Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
 

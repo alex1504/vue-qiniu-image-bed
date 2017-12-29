@@ -114,12 +114,13 @@
         this.close('left');
       },
       getImageList() {
-        API.getImageList(this.qiniuAuth).then(res => {
+        API.getImageList(this.qiniuAuth,'',1000).then(res => {
           if (res.data.code == 200) {
-            let data = res.data.data;
-            data.sort((obj1, obj2) => {
-              return obj2.putTime - obj1.putTime;
-            });
+            let data = res.data.data.items;
+            console.log(data)
+            // data.sort((obj1, obj2) => {
+            //   return obj2.putTime - obj1.putTime;
+            // });
             data = data.map(obj => {
               return {
                 hash: obj.hash,

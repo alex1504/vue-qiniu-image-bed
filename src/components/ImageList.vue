@@ -1,5 +1,5 @@
 <template>
-  <div class="m-piclist">
+  <div class="m-piclist" ref="list">
     <mu-linear-progress v-show="isDelete" />
     <mu-linear-progress v-show="isRequesting" />
     <div class="m-order">
@@ -22,12 +22,12 @@
         </div>
       </div>
     </transition>
-    <div v-for="(dateSplitItem,index) in dealPicList" :key="index">
+    <div v-for="(dateSplitItem,groupIndex) in dealPicList" :key="groupIndex">
       <p class="date"><i class="fa fa-clock-o"></i>{{dateSplitItem.date}}</p>
       <mu-row gutter>
         <mu-col class="item" width="20" tablet="50" desktop="25" v-for="(item,index) in dateSplitItem.list" :key="index">
           <mu-card>
-            <mu-checkbox name="group" label="" :nativeValue="index.toString()" class="demo-checkbox" v-model="selectList" />
+            <mu-checkbox name="group" label="" :nativeValue="item.realIndex.toString()" class="demo-checkbox" v-model="selectList" />
             <mu-card-media>
               <div class="image" :style="'background-image:url('+item.src+')'"></div>
               <div class="cover" @click="showImagePop(item.src)"></div>
@@ -40,13 +40,13 @@
               <mu-flat-button label="复制" v-clipboard:copy="item.src" v-clipboard:success="onCopy">
                 <i class="fa fa-copy"></i>
               </mu-flat-button>
-              <mu-flat-button label="删除" @click="deleteItem(item,index)">
+              <mu-flat-button label="删除" @click="deleteItem(item)">
                 <i class="fa fa-trash-o"></i>
               </mu-flat-button>
               <mu-flat-button label="打开" @click="openLink(item.src)">
                 <i class="fa fa-external-link"></i>
               </mu-flat-button>
-              <mu-flat-button label="选择" @click="selectItem(index)">
+              <mu-flat-button label="选择" @click="selectItem(item)">
                 <i class="fa fa-mouse-pointer"></i>
               </mu-flat-button>
             </mu-card-actions>
@@ -66,6 +66,7 @@
     </transition>
   </div>
 </template>
+
 
 <script>
   import API from "../api/index";
@@ -87,14 +88,22 @@
         isSelectAll: false,
         picList: [
           /* {
-            hash: "",
-            key: "a",
-            src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
-          }*/
+                  hash: "",
+                  key: "a",
+                  src: "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"
+                }*/
         ],
         picListCache: [],
         dateOrder: "1",
-        filterType: "1"
+        filterType: "1",
+        // 首次加载返回图片标记，根据返回的markder和首次缓存的makder是否相同判断是否已加载所有
+        firstMarker: "",
+        // 图片位置标记
+        marker: "",
+        // 每页返回图片数量
+        limit: 50,
+        busy: false,
+        isLoadAll: false
       };
     },
     computed: {
@@ -107,10 +116,11 @@
       dealPicList() {
         let result = [];
         let dateCache = {};
-        this.picList.forEach(item => {
+        this.picList.forEach((item,realIndex) => {
           const ms = item.putTime * Math.pow(10, -4);
           const date = Util.getFormatDate(ms);
-          console.log(date);
+          // 保存item在原数组中的索引
+          item.realIndex = realIndex;
           if (!dateCache[date]) {
             result.push({
               date: date,
@@ -124,14 +134,14 @@
           }
         });
         return result;
-      },
+      }
     },
     watch: {
       dateOrder() {
         this.picList = this.picList.reverse();
       },
       filterType(val) {
-        this.filterImage(val)
+        this.filterImage(val);
       }
     },
     methods: {
@@ -149,9 +159,6 @@
           }
         });
       },
-      reflowed: function() {
-        this.isBusy = false;
-      },
       toggleSelect(item) {
         const index = this.selectItems.keys.indexOf(item.key);
         if (index == -1) {
@@ -168,22 +175,24 @@
         input.select();
       },
       selectItem(item) {
-        if (this.selectList.indexOf(item.toString()) !== -1) {
+        const realIndex = item.realIndex;
+        if (this.selectList.indexOf(realIndex.toString()) !== -1) {
           return;
         }
-        this.selectList.push(item.toString());
+        this.selectList.push(realIndex.toString());
       },
       cancleOperation() {
         this.selectList = [];
       },
-      deleteItem(item, index) {
-        if (storage.get("qiniu-active") == 2) {
-          this.$store.commit("SNACK_BAR_CHANGE", {
-            snackbar: true,
-            snackMsg: "当前为公共空间，不允许删除图片"
-          });
-          return;
-        }
+      deleteItem(item) {
+        /* if (storage.get("qiniu-active") == 2) {
+            this.$store.commit("SNACK_BAR_CHANGE", {
+              snackbar: true,
+              snackMsg: "当前为公共空间，不允许删除图片"
+            });
+            return;
+          } */
+        const realIndex = item.realIndex;
         this.isDelete = true;
         API.deleteImage(
             Object.assign(this.qiniuAuth, {
@@ -192,8 +201,8 @@
           )
           .then(res => {
             if (res.data.code == 200) {
-              this.picList.splice(index, 1);
-              this.picListCache.splice(index, 1);
+              this.picList.splice(realIndex, 1);
+              this.picListCache.splice(realIndex, 1);
               this.selectList = [];
               this.$store.commit("SNACK_BAR_CHANGE", {
                 snackbar: true,
@@ -225,13 +234,13 @@
           });
       },
       deleteSelectItems() {
-        if (storage.get("qiniu-active") == 2) {
+        /* if (storage.get("qiniu-active") == 2) {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
             snackMsg: "当前为公共空间，不允许删除图片"
           });
           return;
-        }
+        } */
         this.isDelete = true;
         const deletePromises = this.selectList.map(selectIndex => {
           selectIndex = parseInt(selectIndex);
@@ -322,61 +331,118 @@
           isImagePop: true,
           imgview: src
         });
-      }
-    },
-    activated() {
-      console.log("imageList");
-      if (!this.isPicListChange) {
-        return;
-      }
-      this.$store.commit("SPINER_CHANGE", {
-        isSpiner: true
-      });
-      this.picList = [];
-      this.picListCache = [];
-      API.getImageList(this.qiniuAuth)
-        .then(res => {
-          console.log(res);
-          if (res.data.code == 200) {
-            let data = res.data.data;
-            data.sort((obj1, obj2) => {
-              return obj2.putTime - obj1.putTime;
+      },
+      loadMore() {
+        /* if (!this.isPicListChange) {
+            return;
+          } */
+        if (this.busy || this.isLoadAll) {
+          return;
+        }
+        this.busy = true;
+        this.$store.commit("SPINER_CHANGE", {
+          isSpiner: true
+        });
+        console.log('加载东西')
+        /* this.picList = [];
+          this.picListCache = []; */
+        API.getImageList(this.qiniuAuth, this.marker, this.limit)
+          .then(res => {
+            // 加载完所有
+            if (res.data.code == 200) {
+              let marker = res.data.data.marker || "";
+              if (this.firstMarker && this.firstMarker == marker || !marker) {
+                this.isLoadAll = true;
+                this.$store.commit("SNACK_BAR_CHANGE", {
+                  snackbar: true,
+                  snackMsg: "已加载所有的资源"
+                });
+                this.$store.commit("SPINER_CHANGE", {
+                  isSpiner: false
+                });
+              }
+              let data = res.data.data.items;
+              data.forEach(obj => {
+                let temp = {
+                  hash: obj.hash,
+                  key: obj.key,
+                  src: `${this.qiniuAuth.domain}/${obj.key}`,
+                  putTime: obj.putTime
+                };
+                
+                this.picList.push(temp);
+                this.picListCache.push(temp);
+              });
+              this.marker = marker;
+              if (!this.firstMarker) {
+                this.firstMarker = marker;
+              }
+              this.$store.commit("PICLIST_CHANGE", {
+                isPicListChange: false
+              });
+              this.filterImage(this.filterType);
+            } else {
+              this.$store.commit("SNACK_BAR_CHANGE", {
+                snackbar: true,
+                snackMsg: "请检查七牛配置是否正确"
+              });
+            }
+            this.$store.commit("SPINER_CHANGE", {
+              isSpiner: false
             });
-            data = data.map(obj => {
-              return {
-                hash: obj.hash,
-                key: obj.key,
-                src: `${this.qiniuAuth.domain}/${obj.key}`,
-                putTime: obj.putTime
-              };
+            this.busy = false;
+          })
+          .catch(err => {
+            console.log(err);
+            this.$store.commit("SPINER_CHANGE", {
+              isSpiner: false
             });
-            console.log(data);
-            this.picList = data;
-            this.picListCache = data;
-            this.$store.commit("PICLIST_CHANGE", {
-              isPicListChange: false
-            });
-            this.filterImage(this.filterType)
-          } else {
             this.$store.commit("SNACK_BAR_CHANGE", {
               snackbar: true,
-              snackMsg: "请检查七牛配置是否正确"
+              snackMsg: "获取资源失败"
             });
+            this.busy = false;
+          });
+      }
+    },
+    mounted() {
+      function throttle(fn, threshhold, scope) {
+        threshhold || (threshhold = 250);
+        var last, timer;
+        return function() {
+          var context = scope || this;
+          var now = +new Date(),
+            args = arguments;
+          if (last && now - last + threshhold < 0) {
+            // hold on to it
+            clearTimeout(deferTimer);
+            timer = setTimeout(function() {
+              last = now;
+              fn.apply(context, args);
+            }, threshhold);
+          } else {
+            last = now;
+            fn.apply(context, args);
           }
-          this.$store.commit("SPINER_CHANGE", {
-            isSpiner: false
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          this.$store.commit("SPINER_CHANGE", {
-            isSpiner: false
-          });
-          this.$store.commit("SNACK_BAR_CHANGE", {
-            snackbar: true,
-            snackMsg: "获取资源失败"
-          });
-        });
+        };
+      }
+      document.body.addEventListener(
+        "scroll",
+        function() {
+          let scrT =
+            document.body.scrollTop ||
+            (document.documentElement && document.documentElement.scrollTop);
+          let boxH = this.$refs["list"].offsetHeight;
+          let winH =
+            document.body.clientHeight || document.documentElement.clientHeight;
+          if (boxH - winH < scrT) {
+            this.loadMore();
+          }
+        }.bind(this)
+      );
+    },
+    activated() {
+      this.loadMore();
     }
   };
 </script>
@@ -386,7 +452,7 @@
     width: 80%;
     margin: 10px auto 0;
     .item {
-      margin: 10px 0;
+      margin: 0 10px 10px;
       width: 188px;
       min-height: 100px;
       box-shadow: 2px 2px 6px #b5b5b5;
@@ -426,7 +492,7 @@
     }
   }
   .row {
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   .mu-card-actions {
     display: flex;
