@@ -1,6 +1,7 @@
 # CN
 ## 牛牛图床
 Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)，前后端分离。后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发，服务原本部署在Heroku，由于服务响应速度慢的原因，已将后端服务部署在华为云服务器上。
+ps:由于近期出现公共空间流量超额导致个人七牛账号扣费，现已移除公共bucket，请配置私人bucket进行使用。
 ![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
 
 ## 项目地址：
