@@ -4,3 +4,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 bower_components/
+.package-lock.json

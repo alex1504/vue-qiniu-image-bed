@@ -1,7 +1,6 @@
 <template>
   <div id="app" v-cloak>
     <router-view></router-view>
-    <footer v-if="activeRoute =='Init'">Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></footer>
   </div>
 </template>
 
