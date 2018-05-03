@@ -3,7 +3,7 @@
   <div class="m-leftcol">
     <div class="menu">
       <mu-icon-menu icon="more_vert" @change="changeMenu" :open="open" @open="handleOpen" @close="handleClose" :value="activeMenu">
-        <mu-menu-item value="1" title="图片广场" />
+        <!--<mu-menu-item value="1" title="图片广场" />-->
         <mu-menu-item value="2" title="上传图片" />
         <mu-menu-item value="3" title="图片管理" />
         <mu-menu-item value="4" title="七牛配置" />

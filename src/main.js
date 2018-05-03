@@ -6,40 +6,37 @@ import router from './router'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import store from './store/index.js'
-import database from './database/index'
 import VueClipboard from 'vue-clipboard2'
 import infiniteScroll from 'vue-infinite-scroll'
 
-database.init()
 
-Vue.use(MuseUI)
-Vue.use(VueClipboard)
-Vue.use(infiniteScroll)
+Vue.use(MuseUI);
+Vue.use(VueClipboard);
+Vue.use(infiniteScroll);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    router,
-    store,
-    template: '<App/>',
-    components: { App },
-    methods: {
-        // 获取当前路由名称
-        getActiveRoute: function() {
-            return this.$route.name
-        },
-        // 提交当前路由名称
-        commitActiveRoute: function() {
-            var activeRoute = this.getActiveRoute();
-            this.$store.commit('ACTIVE_ROUTE_CHANGE', {
-                'activeRoute': activeRoute
-            })
-        },
+  el: '#app',
+  router,
+  store,
+  template: '<App/>',
+  components: {App},
+  methods: {
+    // 获取当前路由名称
+    getActiveRoute: function () {
+      return this.$route.name
     },
-    mounted: function() {
-        // 初始提交路由名称
-        this.commitActiveRoute();
-    }
-})
+    // 提交当前路由名称
+    commitActiveRoute: function () {
+      var activeRoute = this.getActiveRoute();
+      this.$store.commit('ACTIVE_ROUTE_CHANGE', {
+        'activeRoute': activeRoute
+      })
+    },
+  },
+  mounted: function () {
+    // 初始提交路由名称
+    this.commitActiveRoute();
+  }
+});

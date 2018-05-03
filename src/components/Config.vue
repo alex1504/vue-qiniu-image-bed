@@ -24,7 +24,7 @@
         methods: {
             // 1：私人空间  2：公共空间
             passConfig() {
-                storage.set("qiniu-active", 2);
+                storage.set("qiniu-active", 1);
                 const qiniuAuth = Util.getQiniuAuth();
                 this.$store.commit("QINIU_AUTH_CHANGE", {
                     qiniuAuth: qiniuAuth
@@ -46,7 +46,7 @@
             }
             this.$store.commit("SNACK_BAR_CHANGE", {
                 snackbar: true,
-                snackMsg: "请设置七牛配置，若跳过，将进入公共空间"
+                snackMsg: "请设置七牛配置，可先跳过后续配置"
             });
         }
     }

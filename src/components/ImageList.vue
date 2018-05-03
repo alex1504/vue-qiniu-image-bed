@@ -343,11 +343,12 @@
         this.$store.commit("SPINER_CHANGE", {
           isSpiner: true
         });
-        console.log('加载东西')
+        console.log('加载')
         /* this.picList = [];
           this.picListCache = []; */
         API.getImageList(this.qiniuAuth, this.marker, this.limit)
           .then(res => {
+            console.log(res)
             // 加载完所有
             if (res.data.code == 200) {
               let marker = res.data.data.marker || "";
@@ -369,7 +370,7 @@
                   src: `${this.qiniuAuth.domain}/${obj.key}`,
                   putTime: obj.putTime
                 };
-                
+
                 this.picList.push(temp);
                 this.picListCache.push(temp);
               });

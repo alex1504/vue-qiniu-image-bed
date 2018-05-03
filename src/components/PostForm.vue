@@ -19,7 +19,6 @@
     <!--END post-->
 </template>
 <script>
-import posters from '../mocks/posters.json'
 import axios from 'axios'
 import { mapState } from 'vuex'
 import ImagePop from './ImagePop'

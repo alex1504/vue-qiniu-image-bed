@@ -1,18 +1,18 @@
 <template>
   <div class="m-settings">
     <mu-tabs :value="activeTab" @change="handleTabChange">
-      <mu-tab value="tab1" title="私人空间" />
-      <mu-tab value="tab2" title="公共空间" />
-      <mu-tab value="tab3" title="上传设置" />
+      <mu-tab value="tab1" title="空间配置"/>
+      <!--<mu-tab value="tab2" title="公共空间"/>-->
+      <mu-tab value="tab3" title="上传设置"/>
     </mu-tabs>
     <div v-if="activeTab === 'tab1'">
       <settings-self>
-        <mu-raised-button slot="btn" label="切换当前空间" class="demo-raised-button" secondary @click="openBottomSheet" />
+        <!--<mu-raised-button slot="btn" label="切换当前空间" class="demo-raised-button" secondary @click="openBottomSheet"/>-->
       </settings-self>
     </div>
     <div v-if="activeTab === 'tab2'">
       <settings-public>
-        <mu-raised-button slot="btn" label="切换当前空间" class="demo-raised-button" secondary @click="openBottomSheet" />
+        <mu-raised-button slot="btn" label="切换当前空间" class="demo-raised-button" secondary @click="openBottomSheet"/>
       </settings-public>
     </div>
     <div v-if="activeTab === 'tab3'">
@@ -24,8 +24,8 @@
         <mu-sub-header>
           你当前所处空间为：{{qiniuActive == 1 ? '私人空间' : '公共空间'}}
         </mu-sub-header>
-        <mu-list-item title="私人空间" @click="changeZone(1)" />
-        <mu-list-item title="公共空间" @click="changeZone(2)" />
+        <mu-list-item title="私人空间" @click="changeZone(1)"/>
+        <mu-list-item title="公共空间" @click="changeZone(2)"/>
       </mu-list>
     </mu-bottom-sheet>
   </div>
@@ -37,6 +37,7 @@
   import SettingsSelf from "./SettingsSelf.vue";
   import SettingsPublic from "./SettingsPublic.vue";
   import SettingsUpload from "./SettingsUpload.vue"
+
   export default {
     name: "settings",
     components: {
@@ -122,12 +123,15 @@
     width: 80%;
     margin: 0 auto;
   }
+
   .mu-text-field {
     width: 100%;
   }
+
   .mu-tabs {
     background-color: #46529d;
   }
+
   .mu-tab-link-highlight {
     background-color: #ff4081;
   }

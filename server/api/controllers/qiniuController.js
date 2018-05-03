@@ -29,7 +29,7 @@ function renderUniFileName(type) {
   return `${year}-${month}-${date}/${randomNum}${ext}`
 }
 
-/** 
+/**
  * [renderUploadToken Function]
  * @param fields: {{object}}
  */
@@ -52,7 +52,7 @@ function renderUploadToken(fields) {
 };
 
 
-/** 
+/**
  * [uploadFile Function]
  * @param accessKey: {{string}}
  * @param secretKey: {{string}}
@@ -86,7 +86,7 @@ function uploadFile(req, res) {
       const uploadPromise = new Promise((resolve, reject) => {
         // 文件上传
         formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr,
-          respBody, respInfo) {
+                                                                              respBody, respInfo) {
           if (respErr) {
             reject(respErr);
             return;
@@ -187,7 +187,7 @@ function fetchAndUpload(req, res) {
   });
 }
 
-/** 
+/**
  * [getImageInfo Function]
  * @param accessKey: {{string}}
  * @param secretKey: {{string}}
@@ -229,7 +229,7 @@ function getImageInfo(req, res) {
   });
 }
 
-/** 
+/**
  * [getImageList Function]
  * @param accessKey: {{string}}
  * @param secretKey: {{string}}
@@ -284,7 +284,7 @@ function getImageList(req, res) {
 }
 
 
-/** 
+/**
  * [deleteImage Function]
  * @param accessKey: {{string}}
  * @param secretKey: {{string}}
@@ -324,7 +324,6 @@ function deleteImage(req, res) {
       }
     });
 }
-
 
 
 module.exports = {

@@ -47,7 +47,8 @@
   }
   .container {
     width: 100%;
-    height: 100%; // background: url('../assets/images/login_bg.jpg') no-repeat center center;
+    height: 100%;
+    /*background: url('../assets/images/login_bg.jpg') no-repeat center center;*/
     background-size: cover;
     display: flex;
     justify-content: center;

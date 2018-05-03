@@ -5,3 +5,5 @@ yarn-debug.log*
 yarn-error.log*
 bower_components/
 .package-lock.json
+.vscode
+.idea

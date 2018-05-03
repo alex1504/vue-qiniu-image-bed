@@ -2,7 +2,6 @@
   <div class="home">
     <div class="container">
       <Sidebar></Sidebar>
-      <!--Start Main-->
       <div class="m-main">
         <!--<Ground></Ground>-->
         <!--<PostForm></PostForm>-->
@@ -12,11 +11,10 @@
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
-        <mu-circular-progress :size="60" :strokeWidth="5" v-if="isLoading" />
+        <mu-circular-progress :size="60" :strokeWidth="5" v-if="isLoading"/>
         <Snackbar></Snackbar>
         <ImagePop></ImagePop>
       </div>
-      <!--END Main-->
     </div>
     <Backtop></Backtop>
   </div>
@@ -34,11 +32,11 @@
   import Snackbar from "../components/Snackbar.vue";
   import ImagePop from "../components/ImagePop.vue";
   import Backtop from "../components/Backtop.vue";
+
   export default {
     name: "home",
     data() {
-      return {
-      };
+      return {};
     },
     computed: {
       isLoading() {
@@ -57,9 +55,7 @@
       ImagePop,
       Backtop
     },
-    methods: {
-     
-    },
+    methods: {},
     mounted() {
     }
   };
@@ -75,10 +71,13 @@
     background: url("../assets/images/login_bg.jpg") no-repeat center center;
     background-size: cover;
   }
+
   .container {
     width: 100%;
     height: 100%;
-  } // main
+  }
+
+  // main
   .m-main {
     position: relative;
     margin-left: 300px;
@@ -90,9 +89,11 @@
       left: 100px;
     }
   }
+
   .m-snackbar {
     z-index: 999999999;
   }
+
   .mu-circular-progress {
     left: 50%;
     margin-top: 30px;

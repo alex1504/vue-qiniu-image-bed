@@ -10,24 +10,26 @@
         <div class="wrap">
           <div class="main">
             <img :src="imgview" :class="{'z-active': isActive}">
-            <mu-float-button icon="close" class="btn-confirm" @click="closeImagePop" primary />
+            <mu-float-button icon="close" class="btn-confirm" @click="closeImagePop" primary/>
             <mu-float-button :href="imgview" download class="btn-download" primary>
               <i class="fa fa-download"></i>
             </mu-float-button>
-            <mu-float-button icon="share" class="btn-share" primary @click.stop.prevent="showForm" />
+            <!--<mu-float-button icon="share" class="btn-share" primary @click.stop.prevent="showForm"/>-->
           </div>
         </div>
       </div>
       <div class="imgview" v-if="isForm">
         <div>
           <h1>分享成功后，图片会在广场中被检索到</h1>
-          <mu-text-field hintText="标题" v-model="title" /><br/>
-          <mu-text-field hintText="关键词：支持多个，逗号分隔" v-model="keywordBind" /><br/>
+          <mu-text-field hintText="标题" v-model="title"/>
+          <br/>
+          <mu-text-field hintText="关键词：支持多个，逗号分隔" v-model="keywordBind"/>
+          <br/>
           <mu-select-field v-model="imageTypeBind" multiple label="图片类别">
-            <mu-menu-item v-for="(item,index) in typeList" :key="index" :value="index" :title="item" />
+            <mu-menu-item v-for="(item,index) in typeList" :key="index" :value="index" :title="item"/>
           </mu-select-field>
           <div>
-            <mu-raised-button label="分享" primary @click="shareImage" />
+            <mu-raised-button label="分享" primary @click="shareImage"/>
           </div>
           <mu-float-button :href="imgview" class="btn-back" primary @click.stop.prevent="hideForm">
             <i class="fa fa-arrow-left"></i>
@@ -42,12 +44,13 @@
   import API from '../api/index'
   import storage from '../utils/storage'
   import Util from "../utils/common"
+
   export default {
     data() {
       return {
         picList: [],
         isActive: false,
-        typeList: ['生活','家居','自然','城市','旅游','食物','用品','科技','交通','素材','金融','商务','概念','动物'],
+        typeList: ['生活', '家居', '自然', '城市', '旅游', '食物', '用品', '科技', '交通', '素材', '金融', '商务', '概念', '动物'],
         /* --- 分享表单 --- */
         isForm: false,
         keywordBind: '',
@@ -65,7 +68,7 @@
       isImagePop(isImagePop) {
         if (isImagePop) {
           this.getImageList()
-        }else{
+        } else {
           this.isForm = false
         }
       }
@@ -81,11 +84,11 @@
         return this.$store.state.qiniuAuth
       },
       /* --- 分享表单 --- */
-      keyword(){
-        return this.keywordBind.replace('，',',').split(',')
+      keyword() {
+        return this.keywordBind.replace('，', ',').split(',')
       },
-      imageType(){
-        return this.imageTypeBind.map((value)=>{
+      imageType() {
+        return this.imageTypeBind.map((value) => {
           return this.typeList[value]
         })
       }
@@ -114,7 +117,7 @@
         this.close('left');
       },
       getImageList() {
-        API.getImageList(this.qiniuAuth,'',1000).then(res => {
+        API.getImageList(this.qiniuAuth, '', 1000).then(res => {
           if (res.data.code == 200) {
             let data = res.data.data.items;
             console.log(data)
@@ -139,11 +142,11 @@
           });
         });
       },
-      shareImage(){
+      shareImage() {
         console.log(this.imageType)
-        
-        if(!this.title || !this.keyword || !this.imageType.length){
-           this.$store.commit("SNACK_BAR_CHANGE", {
+
+        if (!this.title || !this.keyword || !this.imageType.length) {
+          this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
             snackMsg: "存在字段为空"
           });
@@ -154,23 +157,23 @@
           keyword: this.keyword,
           type: this.imageType,
           source: this.imgview
-        }).then(res=>{
+        }).then(res => {
           console.log(res)
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
             snackMsg: "分享成功"
           });
-        }).catch(err=>{
+        }).catch(err => {
           this.$store.commit("SNACK_BAR_CHANGE", {
             snackbar: true,
             snackMsg: "分享失败"
           });
         })
       },
-      showForm(){
+      showForm() {
         this.isForm = true;
       },
-      hideForm(){
+      hideForm() {
         this.isForm = false;
       }
     },
@@ -187,6 +190,7 @@
     align-items: center;
     padding: 24px;
   }
+
   .mu-popup {
     .fa {
       font-size: 18px;
@@ -250,11 +254,11 @@
           animation: fadeIn .3s linear;
         }
       }
-      .mu-text-field{
+      .mu-text-field {
         width: 100%;
       }
     }
-    .btn-confirm,.btn-back {
+    .btn-confirm, .btn-back {
       display: block;
       margin: auto;
       position: absolute;
