@@ -52,11 +52,10 @@ npm run server
 ```
 
 ## Others
-1. In order to improve access speed, the website using [coding](https://coding.net) for static host
-2. Using **localStorage** to save seven cattle authorization data.
-3. Some resource libraries are introduced by CDN, which is provided by [**bootCDN**] (http://www.bootcdn.cn/).
-4. If you have any questions, feedbacks or suggestions, please submit them to issue.
-5. Welcome to **fork and star**, your support is the driving force for me to move forward.
+1. Using **localStorage** to save seven cattle authorization data.
+2. Some resource libraries are introduced by CDN, which is provided by [**bootCDN**] (http://www.bootcdn.cn/).
+3. If you have any questions, feedbacks or suggestions, please submit them to issue.
+4. Welcome to **fork and star**, your support is the driving force for me to move forward.
 
 # CN
 ## 牛牛图床
@@ -110,8 +109,7 @@ npm run server
 ```
 
 ## 其他
-1. 为提高访问速度，图床使用[coding](https://coding.net)静态网站托管服务
-2. 项目前端使用**localStorage**保存七牛授权数据
-3. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
-4. 若有任何问题、反馈或者建议，请提交issue中。
-5. 若项目对你有所帮助，别忘了**star**一下。
+1. 项目前端使用**localStorage**保存七牛授权数据
+2. 部分资源库采用CDN方式引入，由[**bootCDN**](http://www.bootcdn.cn/)提供
+3. 若有任何问题、反馈或者建议，请提交issue中。
+4. 若项目对你有所帮助，别忘了**star**一下。
