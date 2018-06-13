@@ -3,9 +3,8 @@ import storage from '../utils/storage'
 
 if (process.env.NODE_ENV == 'development') {
   axios.defaults.baseURL = '/api';
-  // axios.defaults.baseURL = 'http://127.0.0.1:3000';
 } else {
-  axios.defaults.baseURL = 'http://114.67.72.148:3000';
+  axios.defaults.baseURL = 'http://193.112.174.142:3000';
 }
 
 export default {
