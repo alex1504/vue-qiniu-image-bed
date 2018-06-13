@@ -13,7 +13,6 @@ Online address：http://cowbed.huzerui.com
 - [x] Upload with input element, drag file to upload, upload online pictures URL
 - [x] Outer chain replication (markdown)
 - [x] Picture management, preview, download, batch delete
-- [x] Picture square, share pictures to the square
 - [ ] Picture management by date
 - [ ] Picture rename
 - [ ] Audio and video resource management
@@ -70,7 +69,6 @@ Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](h
 - [x] 控件上传、拖拽本地图片上传、在线图片URL上传
 - [x] 外链复制（markdown）
 - [x] 图片管理、预览、下载、批量删除
-- [x] 图片广场，分享图片到广场
 - [ ] 图片分日期管理
 - [ ] 图片重命名
 - [ ] 音频、视频资源管理
