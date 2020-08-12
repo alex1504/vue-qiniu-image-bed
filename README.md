@@ -2,7 +2,7 @@
 ## Cow-Bed
 A single page application for Qiniu image management which using Vue-cli(base on [museui](http://www.muse-ui.org)), front-end and back-end seperation. The back-end is based on express and Qiniu [nodejs-SDK](https://github.com/qiniu/nodejs-sdk).
 (Public zone is invalid)
-![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
+![preview](http://qiniu1.huzerui.com/blog/17-10-26/30600390.jpg)
 
 ## Project Address:
 Source address: https://github.com/alex1504/vue-qiniu-image-bed
@@ -58,7 +58,7 @@ npm run server
 # CN
 ## 牛牛图床
 Vue-cli脚手架构建的七牛图片管理图床单页应用（基于[museui](http://www.muse-ui.org)，前后端分离，后端基于express及七牛[nodejs-SDK](https://github.com/qiniu/nodejs-sdk)开发。（公共空间已失效）
-![preview](http://qiniu1.huzerui.com/17-10-26/30600390.jpg)
+![preview](http://qiniu1.huzerui.com/blog/17-10-26/30600390.jpg)
 
 ## 项目地址：
 源码地址：https://github.com/alex1504/vue-qiniu-image-bed
